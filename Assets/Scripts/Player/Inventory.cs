@@ -62,6 +62,8 @@ public class Inventory : MonoBehaviour
             cameraObject.SetActive(components.activeSelf == false ? true : false);
 
             inventoyOnOffCheck = components.activeSelf == false ? false : true;
+
+            GameManager.Instance.GamePause(inventoyOnOffCheck);
         }
     }
 

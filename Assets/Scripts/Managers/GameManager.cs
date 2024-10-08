@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,8 +10,7 @@ public class GameManager : MonoBehaviour
     [Header("게임 정지")]
     [SerializeField] private bool gamePause;
 
-    [Header("옵션창")]
-    [SerializeField] private GameObject optionWindow;
+    private bool inventoryCheck = false; //인벤토리 씬으로 넘어갔는지 체크하기 위한 변수
 
     private void Awake()
     {
@@ -43,8 +43,24 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            optionWindow.SetActive(optionWindow.activeSelf == false ? true : false);
-            gamePause = optionWindow.activeSelf == false ? false : true;
+            inventoryCheck = inventoryCheck == false ? true : false;
+
+            if (inventoryCheck == true)
+            {
+                SceneManager.LoadSceneAsync("Inventory");
+            }
+            else
+            {
+                SceneManager.LoadSceneAsync("TestScene");
+            }
         }
+    }
+
+    /// <summary>
+    /// 게임 정지 및 활성화
+    /// </summary>
+    public void GamePause(bool _gamePause)
+    {
+        gamePause = _gamePause;
     }
 }
