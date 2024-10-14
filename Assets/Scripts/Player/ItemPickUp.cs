@@ -7,6 +7,8 @@ public class ItemPickUp : MonoBehaviour
 {
     private Inventory inventory;
 
+    private CharacterController characterController;
+
     [Header("아이템 줍기 기능")]
     [SerializeField, Tooltip("아이템을 주울 수 있는 거리")] private float pickUpDistance;
 
@@ -15,11 +17,13 @@ public class ItemPickUp : MonoBehaviour
 
     private void Awake()
     {
-        inventory = Inventory.Instance;
+        characterController = GetComponent<CharacterController>();
     }
 
     private void Start()
     {
+        inventory = Inventory.Instance;
+
         screenHeight = Screen.height;
         screenWidth = Screen.width;
     }
@@ -36,12 +40,26 @@ public class ItemPickUp : MonoBehaviour
     {
         Ray pickUpRay = Camera.main.ScreenPointToRay(new Vector3(screenWidth * 0.5f, screenHeight * 0.5f));
 
-        if (Physics.Raycast(pickUpRay, out RaycastHit hit, pickUpDistance, LayerMask.GetMask("Item")))
+        if(Input.GetKeyDown(KeyCode.E))
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Physics.Raycast(pickUpRay, out RaycastHit hittem, pickUpDistance, LayerMask.GetMask("Item")) && inventory != null)
             {
-                inventory.SetItemIndex(hit.collider.gameObject.GetComponent<Item>().ItemIndex);
-                Destroy(hit.collider.gameObject);
+                inventory.SetItemIndex(hittem.collider.gameObject.GetComponent<Item>().ItemIndex);
+                Destroy(hittem.collider.gameObject);
+            }
+            else if (Physics.Raycast(pickUpRay, out RaycastHit hitHide, pickUpDistance, LayerMask.GetMask("HideObject")))
+            {
+                HideObject hideSc = hitHide.collider.gameObject.GetComponent<HideObject>();
+
+                if (hideSc.Hide == false)
+                {
+                    characterController.height = 1;
+                    characterController.enabled = false;
+                    gameObject.transform.position = hideSc.HideTransform().position;
+                    characterController.enabled = true;
+                    hideSc.Hide = true;
+                    hideSc.PlayerObject(gameObject);
+                }
             }
         }
     }

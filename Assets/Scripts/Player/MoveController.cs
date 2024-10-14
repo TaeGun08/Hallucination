@@ -12,6 +12,7 @@ public class MoveController : MonoBehaviour
     [SerializeField] private Transform headTrs; //캐릭터의 머리 Transform
     [SerializeField] private float moveSpeed; //캐릭터 기본 이동속도
     [SerializeField] private float runSpeed; //캐릭터 달리기 속도
+    [SerializeField] private float gravity; //캐릭터의 중력
     private Vector3 moveDir; //캐릭터가 움직이기 위한 vec3값
 
     private void Awake()
@@ -27,6 +28,7 @@ public class MoveController : MonoBehaviour
     {
         rotate();
         move();
+        gravityVelocity();
     }
 
     private void rotate()
@@ -73,6 +75,18 @@ public class MoveController : MonoBehaviour
         else
         {
             characterController.Move(transform.rotation * moveDir.normalized * runSpeed * Time.deltaTime);
+        }
+    }
+
+    private void gravityVelocity()
+    {
+        if (characterController.isGrounded == false)
+        {
+            characterController.Move(new Vector3(0f, -gravity, 0f) * Time.deltaTime);
+        }
+        else
+        {
+            characterController.Move(new Vector3(0f, 0f, 0f));
         }
     }
 }

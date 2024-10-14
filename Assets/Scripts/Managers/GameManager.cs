@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     private void optionWindowOnOff()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             inventoryCheck = inventoryCheck == false ? true : false;
 

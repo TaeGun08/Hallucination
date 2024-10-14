@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
-
-    private CameraManager cameraManager;
 
     [Header("인벤토리")]
     [SerializeField] private List<int> slot;
@@ -36,13 +35,8 @@ public class Inventory : MonoBehaviour
         {
             slot.Add(-1);
         }
-    }
 
-    private void Start()
-    {
-        cameraManager = CameraManager.Instance;
-
-        components = gameObject.transform.GetChild(0).gameObject;
+        components = transform.GetChild(0).gameObject;
     }
 
     private void Update()
@@ -52,29 +46,26 @@ public class Inventory : MonoBehaviour
 
     private void inventoryOnOff()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (SceneManager.GetActiveScene().name == "Inventory" && components.activeSelf == false && Option.Instance.ChangeSetting == false)
         {
-            components.SetActive(components.activeSelf == false ? true : false);
-
-            Cursor.lockState = components.activeSelf == true ? CursorLockMode.None : CursorLockMode.Locked;
-
-            GameObject cameraObject = cameraManager.GetVirtualCamera(0).gameObject;
-            cameraObject.SetActive(components.activeSelf == false ? true : false);
-
-            inventoyOnOffCheck = components.activeSelf == false ? false : true;
-
-            GameManager.Instance.GamePause(inventoyOnOffCheck);
+            Cursor.lockState = CursorLockMode.None;
+            components.SetActive(true);
+        }
+        else if (SceneManager.GetActiveScene().name != "Inventory" && components.activeSelf == true)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            components.SetActive(false);
         }
     }
 
     /// <summary>
     /// 플레이어의 인벤토리에서 아이템을 얻었을 떄 캔버스로 보이는 인벤토리에 아이템을 생성해주기 위한 함수
     /// </summary>
-    private void SetItem(int _index)
+    private void setItem(int _index)
     {
         GameObject item = Instantiate(itemImage, slotObject[_index].transform);
         item.transform.SetParent(slotObject[_index].transform);
-        ItemImage  itemImg = item.GetComponent<ItemImage>();
+        ItemImage itemImg = item.GetComponent<ItemImage>();
         itemImg.SetIndex(_index);
     }
 
@@ -97,10 +88,19 @@ public class Inventory : MonoBehaviour
             if (slot[iNum] == -1)
             {
                 slot[iNum] = _index;
-                SetItem(iNum);
+                setItem(iNum);
                 break;
             }
         }
+    }
+
+    /// <summary>
+    /// 인벤토리 구성요소들
+    /// </summary>
+    /// <returns></returns>
+    public GameObject Components()
+    {
+        return components;
     }
 
     /// <summary>
