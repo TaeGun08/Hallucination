@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HideObject : MonoBehaviour
 {
-    [SerializeField] private bool hide; //지금 이 오브젝트를 통해 숨어있는지 체크하기 위한 변수
+    [SerializeField] private bool hide = false; //지금 이 오브젝트를 통해 숨어있는지 체크하기 위한 변수
     public bool Hide
     {
         get
@@ -16,6 +16,8 @@ public class HideObject : MonoBehaviour
             hide = value;
         }
     }
+    [SerializeField] private float hideOnOffTime;
+    private float timer;
     [SerializeField] private Transform hideTrs; //숨어있을 위치
     [SerializeField] private Transform hideOnTrs; //밖으로 나와있을 위치
 
@@ -28,13 +30,19 @@ public class HideObject : MonoBehaviour
 
     private void hideOnCheck()
     {
-        if (Input.GetKeyDown(KeyCode.E) && hide == true)
+        if (hide == true && timer <= hideOnOffTime)
+        {
+            timer += Time.deltaTime;
+        }
+
+        if (Input.GetKeyDown(KeyCode.E) && hide == true && timer >= hideOnOffTime)
         {
             CharacterController characterController = player.GetComponent<CharacterController>();
             characterController.height = 2;
             characterController.enabled = false;
             player.transform.position = hideOnTrs.position;
             characterController.enabled = true;
+            timer = 0;
             hide = false;
         }
     }

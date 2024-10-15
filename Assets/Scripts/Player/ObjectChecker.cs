@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ItemPickUp : MonoBehaviour
+public class ObjectChecker : MonoBehaviour
 {
     private Inventory inventory;
 
     private CharacterController characterController;
 
-    [Header("아이템 줍기 기능")]
-    [SerializeField, Tooltip("아이템을 주울 수 있는 거리")] private float pickUpDistance;
+    [Header("전장의 오브젝트를 확인하기 위한 거리")]
+    [SerializeField] private float checkDistance;
 
     private float screenHeight; //화면 세로 크기
     private float screenWidth; //화면 가로 크기
@@ -30,24 +30,24 @@ public class ItemPickUp : MonoBehaviour
 
     private void Update()
     {
-        pickUpItemCheck();
+        objectCheck();
     }
 
     /// <summary>
-    /// 획득할 수 있는 아이템인지 확인하기 위한 함수
+    ///  전방의 오브젝트를 확인하기 위한 함수
     /// </summary>
-    private void pickUpItemCheck()
+    private void objectCheck()
     {
         Ray pickUpRay = Camera.main.ScreenPointToRay(new Vector3(screenWidth * 0.5f, screenHeight * 0.5f));
 
         if(Input.GetKeyDown(KeyCode.E))
         {
-            if (Physics.Raycast(pickUpRay, out RaycastHit hittem, pickUpDistance, LayerMask.GetMask("Item")) && inventory != null)
+            if (Physics.Raycast(pickUpRay, out RaycastHit hittem, checkDistance, LayerMask.GetMask("Item")) && inventory != null)
             {
                 inventory.SetItemIndex(hittem.collider.gameObject.GetComponent<Item>().ItemIndex);
                 Destroy(hittem.collider.gameObject);
             }
-            else if (Physics.Raycast(pickUpRay, out RaycastHit hitHide, pickUpDistance, LayerMask.GetMask("HideObject")))
+            else if (Physics.Raycast(pickUpRay, out RaycastHit hitHide, checkDistance, LayerMask.GetMask("HideObject")))
             {
                 HideObject hideSc = hitHide.collider.gameObject.GetComponent<HideObject>();
 
@@ -60,6 +60,11 @@ public class ItemPickUp : MonoBehaviour
                     hideSc.Hide = true;
                     hideSc.PlayerObject(gameObject);
                 }
+            }
+            else if (Physics.Raycast(pickUpRay, out RaycastHit hitNpc, checkDistance, LayerMask.GetMask("Npc")))
+            {
+                Npc npcSc = hitNpc.collider.gameObject.GetComponent<Npc>();
+                npcSc.CameraOnOff = true;
             }
         }
     }
