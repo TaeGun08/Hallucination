@@ -25,6 +25,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        //StartCoroutine(FadeInOut.Instance.functionFade());
+    }
+
     private void Update()
     {
         gamePauseCheck();

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class ObjectChecker : MonoBehaviour
 {
     private Inventory inventory;
+    private DialogueManager dialogueManager;
 
     private CharacterController characterController;
 
@@ -23,6 +25,7 @@ public class ObjectChecker : MonoBehaviour
     private void Start()
     {
         inventory = Inventory.Instance;
+        dialogueManager = DialogueManager.Instance;
 
         screenHeight = Screen.height;
         screenWidth = Screen.width;
@@ -40,32 +43,40 @@ public class ObjectChecker : MonoBehaviour
     {
         Ray pickUpRay = Camera.main.ScreenPointToRay(new Vector3(screenWidth * 0.5f, screenHeight * 0.5f));
 
-        if(Input.GetKeyDown(KeyCode.E))
+        if (Physics.Raycast(pickUpRay, out RaycastHit hit, checkDistance))
         {
-            if (Physics.Raycast(pickUpRay, out RaycastHit hittem, checkDistance, LayerMask.GetMask("Item")) && inventory != null)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                inventory.SetItemIndex(hittem.collider.gameObject.GetComponent<Item>().ItemIndex);
-                Destroy(hittem.collider.gameObject);
+                hitObejct(hit);
             }
-            else if (Physics.Raycast(pickUpRay, out RaycastHit hitHide, checkDistance, LayerMask.GetMask("HideObject")))
-            {
-                HideObject hideSc = hitHide.collider.gameObject.GetComponent<HideObject>();
+        }
+    }
 
-                if (hideSc.Hide == false)
-                {
-                    characterController.height = 1;
-                    characterController.enabled = false;
-                    gameObject.transform.position = hideSc.HideTransform().position;
-                    characterController.enabled = true;
-                    hideSc.Hide = true;
-                    hideSc.PlayerObject(gameObject);
-                }
-            }
-            else if (Physics.Raycast(pickUpRay, out RaycastHit hitNpc, checkDistance, LayerMask.GetMask("Npc")))
+    private void hitObejct(RaycastHit _hit)
+    {
+        if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Item") && inventory != null)
+        {
+            inventory.SetItemIndex(_hit.collider.gameObject.GetComponent<Item>().ItemIndex);
+            Destroy(_hit.collider.gameObject);
+        }
+        else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("HideObject"))
+        {
+            HideObject hideSc = _hit.collider.gameObject.GetComponent<HideObject>();
+
+            if (hideSc.Hide == false)
             {
-                Npc npcSc = hitNpc.collider.gameObject.GetComponent<Npc>();
-                npcSc.CameraOnOff = true;
+                characterController.height = 1;
+                characterController.enabled = false;
+                gameObject.transform.position = hideSc.HideTransform().position;
+                characterController.enabled = true;
+                hideSc.Hide = true;
+                hideSc.PlayerObject(gameObject);
             }
+        }
+        else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Npc"))
+        {
+            Npc npcSc = _hit.collider.gameObject.GetComponent<Npc>();
+            dialogueManager.StartDialogue(npcSc.DialogueCheck());
         }
     }
 }

@@ -10,9 +10,8 @@ public class Option : MonoBehaviour
 
     [Header("¹öÆ°")]
     [SerializeField] private List<Button> buttons;
-    private GameObject change;
-
-    private GameObject setting;
+    [SerializeField] private GameObject change;
+    [SerializeField] private GameObject setting;
 
     private bool changeSetting;
 
@@ -38,9 +37,6 @@ public class Option : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        change = transform.GetChild(0).gameObject;
-        setting = transform.GetChild(1).gameObject;
 
         change.SetActive(false);
         setting.SetActive(false);

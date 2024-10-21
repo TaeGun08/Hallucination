@@ -19,7 +19,7 @@ public class FadeInOut : MonoBehaviour
     private UnityAction actionFadeOut;//페이드 아웃 되었을때 동작할 기능
     private UnityAction actionFadeIn;//페이드 인 되었을때 동작할 기능
 
-    bool fade = true;//true가 In false가 Out;
+    private bool fade = true;//true가 In false가 Out;
 
     private void Awake()
     {
