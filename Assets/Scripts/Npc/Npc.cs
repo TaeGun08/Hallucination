@@ -24,7 +24,7 @@ public class Npc : MonoBehaviour
 
     private void Update()
     {
-        npcCamera.SetActive(DialogueManager.Instance.IsDialogue == true ? true : false);
+        npcCamera.SetActive(DialogueManager.Instance.IsDialogue == false ? false : true);
     }
 
     /// <summary>
@@ -32,6 +32,8 @@ public class Npc : MonoBehaviour
     /// </summary>
     public List<string> DialogueCheck()
     {
+        CameraManager.Instance.GetVirtualCamera(0).gameObject.SetActive(false);
+        npcCamera.SetActive(true);
         return dialogues;
     }
 }

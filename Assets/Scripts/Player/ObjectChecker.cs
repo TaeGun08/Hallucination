@@ -43,12 +43,9 @@ public class ObjectChecker : MonoBehaviour
     {
         Ray pickUpRay = Camera.main.ScreenPointToRay(new Vector3(screenWidth * 0.5f, screenHeight * 0.5f));
 
-        if (Physics.Raycast(pickUpRay, out RaycastHit hit, checkDistance))
+        if (Input.GetKeyDown(KeyCode.E) && Physics.Raycast(pickUpRay, out RaycastHit hit, checkDistance))
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                hitObejct(hit);
-            }
+            hitObejct(hit);
         }
     }
 
@@ -76,7 +73,12 @@ public class ObjectChecker : MonoBehaviour
         else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Npc"))
         {
             Npc npcSc = _hit.collider.gameObject.GetComponent<Npc>();
-            dialogueManager.StartDialogue(npcSc.DialogueCheck());
+
+            if (dialogueManager.IsDialogue == false)
+            {
+                CameraManager.Instance.GetVirtualCamera(0).gameObject.SetActive(false);
+                dialogueManager.StartDialogue(npcSc.DialogueCheck());
+            }
         }
     }
 }

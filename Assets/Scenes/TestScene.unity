@@ -3705,19 +3705,24 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3963748303795456190, guid: c8cc24df8467cb8429a4d7d9291881df,
         type: 3}
+      propertyPath: dialogues.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3963748303795456190, guid: c8cc24df8467cb8429a4d7d9291881df,
+        type: 3}
       propertyPath: dialogues.Array.data[0]
-      value: "\uC548\uB155! \uB098\uB791 \uAC8C\uC784\uD558\uB098 \uD558\uC9C0 \uC54A\uC744\uB798?"
+      value: "\uC548\uB155! \uB098\uB791 \uAC8C\uC784\uD558\uB098 \uD558\uC790"
       objectReference: {fileID: 0}
     - target: {fileID: 3963748303795456190, guid: c8cc24df8467cb8429a4d7d9291881df,
         type: 3}
       propertyPath: dialogues.Array.data[1]
       value: "\uB0B4\uAC00 \uCEF5 3\uAC1C \uC911 \uD558\uB098\uC5D0 \uACF5\uC744
-        \uC228\uAE38\uAC70\uC57C!"
+        \uC228\uAE38\uD14C\uB2C8"
       objectReference: {fileID: 0}
     - target: {fileID: 3963748303795456190, guid: c8cc24df8467cb8429a4d7d9291881df,
         type: 3}
       propertyPath: dialogues.Array.data[2]
-      value: "\uADF8\uAC78 \uB108\uAC00 \uCC3E\uC73C\uBA74 \uB3FC! \uC790 \uC2DC\uC791\uD55C\uB2E4!"
+      value: "\uB108\uAC00 \uADF8\uAC78 \uB9DE\uCDB0! \uC2DC\uC791\uD560\uAC8C"
       objectReference: {fileID: 0}
     - target: {fileID: 8178859873804112865, guid: c8cc24df8467cb8429a4d7d9291881df,
         type: 3}
@@ -4096,10 +4101,6 @@ MonoBehaviour:
   dialogueText: {fileID: 1572914361}
   dialogueTime: 0
   textSpeed: 0.1
-  dialogueLine:
-  - "\u3147\u3141\u3134\u3147\u3141\u3134\u3147\u3141\u3134"
-  - "\u3147\u3141\u3134\u3147\u3141\u3134\u3147\u3141\u3134\u3147\u3141\u3134"
-  - "\u3147\u3141\u3134\u3147\u3141\u3134\u3147\u3141\u3134\u3147\u3141\u3134\u3147\u3141\u3134\u3147"
 --- !u!1 &1654908150
 GameObject:
   m_ObjectHideFlags: 0

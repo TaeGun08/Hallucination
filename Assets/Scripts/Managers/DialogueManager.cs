@@ -9,6 +9,8 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager Instance;
 
+    private CameraManager cameraManager;
+
     [Header("다이얼로그 설정")]
     [SerializeField] private GameObject dialogueBox;
     [SerializeField] private TMP_Text dialogueText;
@@ -43,13 +45,15 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
+        cameraManager = CameraManager.Instance;
+
         dialogueText.text = string.Empty;
         dialogueBox.SetActive(false);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && isDialogue == true)
+        if (Input.GetKeyDown(KeyCode.E) && isDialogue == true && dialogueTime >= 0.3f)
         {
             if (dialogueText.text == dialogueLine[index])
             {
@@ -65,7 +69,7 @@ public class DialogueManager : MonoBehaviour
 
     private IEnumerator dialogueTimer()
     {
-        while (isDialogue == false)
+        while (dialogueTime < 0.3f)
         {
             dialogueTime += Time.deltaTime;
             yield return null;
@@ -81,7 +85,7 @@ public class DialogueManager : MonoBehaviour
         {
             index++;
             dialogueText.text = string.Empty;
-            StartCoroutine(funtionDialogue());
+            StartCoroutine(FuntionDialogue());
         }
         else
         {
@@ -91,6 +95,7 @@ public class DialogueManager : MonoBehaviour
             isDialogue = false;
             dialogueLine = null;
             StartCoroutine(dialogueTimer());
+            cameraManager.GetVirtualCamera(0).gameObject.SetActive(true);
         }
     }
 
@@ -98,13 +103,10 @@ public class DialogueManager : MonoBehaviour
     /// 다이얼로그 기능
     /// </summary>
     /// <returns></returns>
-    public IEnumerator funtionDialogue()
+    public IEnumerator FuntionDialogue()
     {
         dialogueText.text = string.Empty;
-        isDialogue = true;
-        dialogueTime = 0;
         dialogueBox.SetActive(true);
-
         string fullText = dialogueLine[index];
 
         foreach (var text in fullText.ToCharArray())
@@ -122,6 +124,9 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueLine = _string;
         index = 0;
-        StartCoroutine(funtionDialogue());
+        isDialogue = true;
+        dialogueTime = 0;
+        StartCoroutine(dialogueTimer());
+        StartCoroutine(FuntionDialogue());
     }
 }
