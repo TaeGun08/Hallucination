@@ -74,7 +74,7 @@ public class ObjectChecker : MonoBehaviour
         {
             Npc npcSc = _hit.collider.gameObject.GetComponent<Npc>();
 
-            if (dialogueManager.IsDialogue == false)
+            if (dialogueManager.IsDialogue == false && npcSc.QuestCheck == false)
             {
                 CameraManager.Instance.GetVirtualCamera(0).gameObject.SetActive(false);
                 dialogueManager.StartDialogue(npcSc.DialogueCheck());

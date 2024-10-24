@@ -19,6 +19,7 @@ public class DialogueManager : MonoBehaviour
     private List<string> dialogueLine = new List<string>();
     private int index = 0;
     private bool isDialogue = false;
+
     public bool IsDialogue
     {
         get

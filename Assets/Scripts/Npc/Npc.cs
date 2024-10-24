@@ -7,6 +7,18 @@ public class Npc : MonoBehaviour
     [Header("NPC¼³Á¤")]
     [SerializeField] private List<string> dialogues;
     [SerializeField] private GameObject npcCamera;
+    [SerializeField] private bool questCheck = false;
+    public bool QuestCheck
+    {
+        get
+        {
+            return questCheck;
+        }
+        set
+        {
+            questCheck = value;
+        }
+    }
 
     //private bool cameraOnOff = false;
 
