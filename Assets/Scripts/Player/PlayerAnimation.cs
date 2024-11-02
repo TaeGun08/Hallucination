@@ -22,6 +22,15 @@ public class PlayerAnimation : MonoBehaviour
 
     private void animCheck()
     {
-        animator.SetBool("isRun", playerBehaviorCheck.WalkRunCheck == 1 ? true : false);
+        if (playerBehaviorCheck.IsBehavior)
+        {
+            animator.SetBool("isWalk", playerBehaviorCheck.WalkRunCheck == 0 ? true : false);
+            animator.SetBool("isRun", playerBehaviorCheck.WalkRunCheck == 1 ? true : false);
+        }
+        else
+        {
+            animator.SetBool("isWalk", false);
+            animator.SetBool("isRun", false);
+        }
     }
 }

@@ -208,10 +208,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3963748303795456190}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 063fe76e6edd4df48972e8470245a87d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7776486374318501007}
   m_SourcePrefab: {fileID: 100100000, guid: 063fe76e6edd4df48972e8470245a87d, type: 3}
 --- !u!4 &8178859873804112865 stripped
 Transform:
@@ -308,20 +304,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bf9ea23fa6370943b6bd72b8bdfa1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogues:
-  - "\uC548\uB155! \uB098\uB791 \uAC8C\uC784\uD558\uB098 \uD558\uC790"
-  - "\uB0B4\uAC00 \uCEF5 3\uAC1C \uC911 \uD558\uB098\uC5D0 \uACF5\uC744 \uC228\uAE38\uD14C\uB2C8"
-  - "\uB108\uAC00 \uADF8\uAC78 \uB9DE\uCDB0! \uC2DC\uC791\uD560\uAC8C"
+  npcId: 0
   npcCamera: {fileID: 2808766095231213552}
---- !u!114 &7776486374318501007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8848153885772745051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4199910947c3c954cbf95d7690fb311d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  questCheck: 0

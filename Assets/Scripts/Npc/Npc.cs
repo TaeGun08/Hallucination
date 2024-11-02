@@ -1,51 +1,45 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Npc : MonoBehaviour
 {
+    private QuestManager questManager;
+
     [Header("NPC설정")]
-    [SerializeField] private List<string> dialogues;
+    [SerializeField] private int npcId;
+    [SerializeField] private List<int> questId;
     [SerializeField] private GameObject npcCamera;
-    [SerializeField] private bool questCheck = false;
-    public bool QuestCheck
+
+    private void Start()
     {
-        get
-        {
-            return questCheck;
-        }
-        set
-        {
-            questCheck = value;
-        }
+        questManager = QuestManager.Instance;
     }
-
-    //private bool cameraOnOff = false;
-
-    //public bool CameraOnOff
-    //{
-    //    get
-    //    {
-    //        return cameraOnOff;
-    //    }
-    //    set
-    //    {
-    //        cameraOnOff = value;
-    //    }
-    //}
 
     private void Update()
     {
+        for (int iNum = 0; iNum < questId.Count; iNum++)
+        {
+            if (questManager.QuestCheck(questId[iNum]) == true)
+            {
+                questId[iNum]++;
+            }
+        }
+
         npcCamera.SetActive(DialogueManager.Instance.IsDialogue == false ? false : true);
     }
 
     /// <summary>
     /// Npc가 가지고 있는 string을 넣어주기 위한 함수
     /// </summary>
-    public List<string> DialogueCheck()
+    public int GetNpcId()
+    {     
+        return npcId;
+    }
+
+    public List<int> GetNpcQuestId()
     {
-        CameraManager.Instance.GetVirtualCamera(0).gameObject.SetActive(false);
-        npcCamera.SetActive(true);
-        return dialogues;
+        return questId;
     }
 }
