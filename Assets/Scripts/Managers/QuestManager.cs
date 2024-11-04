@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 [System.Serializable]
@@ -62,9 +63,30 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     private void questAdd()
     {
-        quest.Add(100, new QuestData(1000, 100, "컵 게임", false));
-        quest.Add(101, new QuestData(1000, 101, "컵 게임 클리어", false));
-        quest.Add(105, new QuestData(1000, 105, "컵 게임 실패", false));
+        addQuest(1000, 100, "퍼즐 게임",  false);
+        addQuest(1000, 101, "퍼즐 게임 클리어", false);
+
+        addQuest(2000, 110, "컵 게임", false);
+        addQuest(2000, 111, "컵 게임 클리어", false);
+        addQuest(2000, 115, "컵 게임 실패", false);
+
+        addQuest(3000, 200, "생선 장난감 찾기", false);
+        addQuest(3000, 201, "생선 장난감 주기", false);
+
+        addQuest(4000, 210, "당근 장난감 찾기", false);
+        addQuest(4000, 211, "당근 장난감 주기", false);
+    }
+
+    /// <summary>
+    /// 퀘스트 추가를 간결하게 하기 위한 함수
+    /// </summary>
+    /// <param name="_npcId"></param>
+    /// <param name="_questId"></param>
+    /// <param name="_questName"></param>
+    /// <param name="_questClear"></param>
+    private void addQuest(int _npcId, int _questId, string _questName, bool _questClear)
+    {
+        quest.Add(_questId, new QuestData(_npcId, _questId, _questName, _questClear));
     }
 
     /// <summary>

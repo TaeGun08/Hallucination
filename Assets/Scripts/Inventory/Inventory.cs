@@ -19,19 +19,34 @@ public class Inventory : MonoBehaviour
     }
 
     /// <summary>
-    /// 플레이어의 인벤토리에서 아이템이 사용되었다면 캔버스로 보이는 인벤토리에 아이템을 한 칸씩 당겨주기 위한 함수
+    /// 플레이어의 인벤토리에 있는 아이템을 확인하기 위한 함수
     /// </summary>
-    public int UseItem(int _index)
+    public bool InveItemCheck(int _index)
     {
         for (int iNum = 0; iNum < slot.Count; iNum++)
         {
             if (slot[iNum] == _index)
             {
-                return slot[iNum];
+                return true;
             }
         }
 
-        return -1;
+        return false;
+    }
+
+    /// <summary>
+    /// 아이템을 사용하기 위한 함수
+    /// </summary>
+    /// <param name="_index"></param>
+    public void UseItem(int _index)
+    {
+        for (int iNum = 0; iNum < slot.Count; iNum++)
+        {
+            if (slot[iNum] == _index)
+            {
+                slot[iNum] = -1;
+            }
+        }
     }
 
     /// <summary>

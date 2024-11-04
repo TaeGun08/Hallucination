@@ -9,6 +9,18 @@ public class QuestGames : MonoBehaviour
 
     [SerializeField] private GameObject shellGame;
     [SerializeField] private GameObject puzzleGame;
+    private bool playerQuestGame;
+    public bool PlayerQuestGame
+    {
+        get
+        {
+            return playerQuestGame;
+        }
+        set
+        {
+            playerQuestGame = value;
+        }
+    }
 
     private void Start()
     {
@@ -24,8 +36,9 @@ public class QuestGames : MonoBehaviour
             {
                 switch (_questId[iNum])
                 {
-                    case 100:
-                        GameObject shell = Instantiate(shellGame, new Vector3(5f, 1.5f, -9f), Quaternion.identity, transform);
+                    case 110:
+                        gameManager.PlayerQuestGame = true;
+                        GameObject shell = Instantiate(shellGame, new Vector3(5f, 1f, -7f), Quaternion.identity, transform);
                         ShellGame shellSc = shell.GetComponent<ShellGame>();
                         shellSc.ShellGameStart();
                         break;

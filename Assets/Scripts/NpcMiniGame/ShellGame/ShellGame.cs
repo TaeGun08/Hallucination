@@ -9,20 +9,34 @@ public class ShellGame : MonoBehaviour
     private DialogueManager dialogueManager;
 
     [Header("컵 게임 설정")]
-    [SerializeField] private List<Shuffle> shuffleSc;
-    [SerializeField] private List<GameObject> cupTrs;
-    [SerializeField] private GameObject ball;
-    [SerializeField] private List<Transform> ballTrs;
-    [SerializeField] private GameObject shellGameCamera;
+    [SerializeField] private List<Shuffle> shuffleSc; //컵을 섞기 위한 
+    [SerializeField] private List<GameObject> cupTrs; //컵의 위치
+    [SerializeField] private GameObject ball; //컵에 숨길 공
+    [SerializeField] private List<Transform> ballTrs; //공을 숨길 위치
+    [SerializeField] private GameObject shellGameCamera; //Shell게임을 위한 카메라
     [Space]
-    [SerializeField] private bool gameStart = false;
-    [SerializeField] private bool gameOver;
-    [SerializeField] private bool gameClear;
-    private bool gameEnd;
-    private float startDelay;
-    [SerializeField] private float shuffleTime;
-    private float timer;
-    private bool shuffleCheck = false;
+    private bool gameStart ; //게임 시작 체크
+    private bool gameOver; //게임 실패 체크
+    private bool gameClear; //게임 성공 체크
+    private bool gameEnd; //게임 종료 체크,
+    private float startDelay; //게임 딜레이
+    [SerializeField] private float shuffleTime; //컵을 섞을 시간
+    public float ShuffleTime
+    {
+        get
+        {
+            return shuffleTime;
+        }
+    }
+    private float timer; //섞는 시간
+    public float Timer
+    {
+        get
+        {
+            return timer;
+        }
+    }
+    private bool shuffleCheck = false; //섞고 있는지 체크
     public bool ShuffleCheck
     {
         get
@@ -35,6 +49,17 @@ public class ShellGame : MonoBehaviour
         }
     }
 
+    private float choiceTimer;
+    public float ChooseTimer
+    {
+        get
+        {
+            return choiceTimer;
+        }
+    }
+    private GameObject ballObj;
+    private Transform shellCupTrs;
+
     private void Start()
     {
         gameManager = GameManager.Instance;
@@ -42,37 +67,33 @@ public class ShellGame : MonoBehaviour
         questManager = gameManager.GetManagers<QuestManager>(3);
 
         shellGameCamera.SetActive(false);
+
+        ballCreate();
     }
 
     private void Update()
     {
         if (gameClear == true && gameEnd == false)
         {
-            shellGameCamera.SetActive(false);
             shellGameClear();
-            gameEnd = true;
-            return;
+            Destroy(gameObject);
         }
 
         if (gameOver == true)
         {
-            for (int iNum = 0; iNum < shuffleSc.Count; iNum++)
-            {
-                ShuffleCup cupSc = cupTrs[iNum].GetComponent<ShuffleCup>();
-                cupSc.Choice = false;
-
-                if (cupSc.transform.childCount > 0)
-                {
-                    GameObject ballObj = cupSc.transform.GetChild(0).gameObject;
-                    Destroy(ballObj);
-                }
-            }
-
             shellGameOver();
-            timer = 0;
-            gameOver = false;
+            Destroy(gameObject);
         }
 
+        gameStartCheck();
+        choiceCup();
+    }
+
+    /// <summary>
+    /// 게임이 시작되었는지 체크 후 5초의 딜레이를 주기 위한 함수
+    /// </summary>
+    private void gameStartCheck()
+    {
         if (gameStart)
         {
             shellGameCamera.SetActive(true);
@@ -87,43 +108,70 @@ public class ShellGame : MonoBehaviour
                 gameStart = false;
             }
         }
+    }
 
-        if (timer >= shuffleTime && Input.GetMouseButtonDown(0))
+    /// <summary>
+    /// 일정시간이 지나면 컵을 고르기 위한 함수
+    /// </summary>
+    private void choiceCup()
+    {
+        if (timer >= shuffleTime)
         {
-            Ray choiceRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(choiceRay, out RaycastHit hit, 5, LayerMask.GetMask("ShuffleCup")))
+            if (choiceTimer <= 1)
             {
-                ShuffleCup cupSc = hit.collider.GetComponent<ShuffleCup>();
+                choiceTimer += Time.deltaTime;
+            }
 
-                if (cupSc != null)
+            if (Input.GetMouseButtonDown(0) && choiceTimer >= 1)
+            {
+                Ray choiceRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(choiceRay, out RaycastHit hit, 5, LayerMask.GetMask("ShuffleCup")))
                 {
-                    if (cupSc.Choice)
-                    {
-                        gameClear = true;
-                    }
-                    else
-                    {
-                        gameOver = true;
-                    }
-                }
+                    ShuffleCup cupSc = hit.collider.GetComponent<ShuffleCup>();
 
-                Cursor.lockState = CursorLockMode.Locked;
+                    if (cupSc != null)
+                    {
+                        if (cupSc.Choice)
+                        {
+                            gameClear = true;
+                        }
+                        else
+                        {
+                            gameOver = true;
+                        }
+                    }
+
+                    gameManager.PlayerQuestGame = false;
+
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
             }
         }
     }
 
-    private IEnumerator shuffleGame()
+    /// <summary>
+    /// shell 게임에 필요한 공 생성 함수
+    /// </summary>
+    private void ballCreate()
     {
         int ballRandomTrs = Random.Range(0, ballTrs.Count);
 
-        Transform shellCupTrs = ballTrs[ballRandomTrs];
+        shellCupTrs = ballTrs[ballRandomTrs];
 
-        GameObject ballObj = Instantiate(ball, new Vector3(shellCupTrs.position.x, shellCupTrs.position.y - 0.2f, shellCupTrs.position.z), Quaternion.identity, transform);
-        ballObj.transform.SetParent(shellCupTrs);
+        ballObj = Instantiate(ball, new Vector3(shellCupTrs.position.x, shellCupTrs.position.y - 0.2f, shellCupTrs.position.z), Quaternion.identity, transform);
 
         ShuffleCup cupSc = cupTrs[ballRandomTrs].GetComponent<ShuffleCup>();
         cupSc.Choice = true;
+    }
+
+    /// <summary>
+    /// 게임 시작을 위한 코루틴
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator shuffleGame()
+    {
+        ballObj.transform.SetParent(shellCupTrs);
 
         while (timer <= shuffleTime)
         {
@@ -173,6 +221,12 @@ public class ShellGame : MonoBehaviour
                 shuffleScript.IsShuffle = true;
                 break;
         }
+
+        for (int iNum = 0; iNum < shuffleSc.Count; iNum++)
+        {
+            Shuffle shuSc = shuffleSc[iNum];
+            shuSc.ShuffleSpeed += 0.15f;
+        }
     }
 
     /// <summary>
@@ -180,11 +234,11 @@ public class ShellGame : MonoBehaviour
     /// </summary>
     private void shellGameClear()
     {
-        if (gameClear == true && questManager.QuestCheck(100) == false)
+        if (gameClear == true && questManager.QuestCheck(110) == false)
         {
-            questManager.CompleteQuest(100);
-            dialogueManager.StartDialogue(1000, new List<int> { 101 });
-            questManager.CompleteQuest(101);
+            questManager.CompleteQuest(110);
+            dialogueManager.StartDialogue(2000, new List<int> { 111 });
+            questManager.CompleteQuest(111);
         }
     }
 
@@ -193,9 +247,9 @@ public class ShellGame : MonoBehaviour
     /// </summary>
     private void shellGameOver()
     {
-        if (gameOver == true && questManager.QuestCheck(100) == false)
+        if (gameOver == true && questManager.QuestCheck(110) == false)
         {
-            dialogueManager.StartDialogue(1000, new List<int> { 105 });
+            dialogueManager.StartDialogue(2000, new List<int> { 115 });
         }
     }
 

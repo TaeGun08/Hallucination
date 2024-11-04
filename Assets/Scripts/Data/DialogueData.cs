@@ -8,9 +8,9 @@ public class DialogueData : MonoBehaviour
     {
         public int npcId;
         public int questId;
-        public List<string> dialogueLines;
+        public string[] dialogueLines;
 
-        public DialogueTalk(int _talkIndex, int _questId, List<string> _dialogueLines)
+        public DialogueTalk(int _talkIndex, int _questId, string[] _dialogueLines)
         {
             npcId = _talkIndex;
             questId = _questId;
@@ -32,29 +32,43 @@ public class DialogueData : MonoBehaviour
     {
         dialogueTalk = new List<DialogueTalk>
         {
-            new DialogueTalk(1000, 0, new List<string>
-            {
-                "안녕, 나는 멍뭉이야",
-                "나한테 무슨 볼일 있니?"
-            }),
-             new DialogueTalk(1000, 100, new List<string>
-            {
-                 "안녕, 나는 멍뭉이야",
-                 "나랑 같이 퍼즐 게임하자",
-                 "같이 맞춰 보자"
-            }),
-            new DialogueTalk(1000, 101, new List<string>
-            {
-                 "너 정말 대단하구나!",
-                 "혼자 다 맞추다니, 짱이다!",
-                 "다음에도 또 놀자, 잘가!"
-            }),
-            new DialogueTalk(1000, 105, new List<string>
-            {
-                 "정말 아깝다!",
-                 "심심할 때 다시 와 또 하자",
-            }),
+            setDialogueTalk(1000, 0, 
+            "안녕!", 
+            "나한테 무슨 볼 일 있니?"),
+            setDialogueTalk(1000, 100, 
+            "안녕, 나랑 같이 퍼즐 게임할래?", 
+            "엄청 재미있을 거야!"),
+            setDialogueTalk(1000, 101, 
+            "역시 같이 맞추니깐 빨리 맞추는 것 같아!", 
+            "재미있었어 다음에도 또 하자!"),
+            setDialogueTalk(2000, 0,
+            "볼 일 있음?",
+            "없음 가셈"),
+            setDialogueTalk(2000, 110,
+            "나랑 야바위 ㄱ?",
+            "걍 발라드림"),
+            setDialogueTalk(2000, 111,
+            "ㄷㄷ 왜이리 잘하심",
+            "자존심 상하네 ㅊ.."),
+            setDialogueTalk(2000, 115,
+            "ㅋㅋㅋㅋ ez 하죠",
+            "한 번 더 덤벼보셈ㅋㅋ"),
+            setDialogueTalk(3000, 0,
+            "나는 개똥벌레",
+            "친구가 없네"),
+            setDialogueTalk(3000, 200,
+            "내 생성 장남감을 찾아줘",
+            "부탁할게"),
+            setDialogueTalk(3000, 201,
+            "고마워",
+            "다음에 도움이 필요하면 도와줄게"),
         };
+    }
+
+    private DialogueTalk setDialogueTalk(int _npcId, int questId, params string[] dialogues)
+    {
+        DialogueTalk newDialogue = new DialogueTalk(_npcId, questId, dialogues);
+        return newDialogue;
     }
 
     /// <summary>
@@ -67,10 +81,11 @@ public class DialogueData : MonoBehaviour
     {
         for (int iNum = 0; iNum < dialogueTalk.Count; iNum++)
         {
-            if (dialogueTalk[iNum].npcId == _npcId 
+            if (dialogueTalk[iNum].npcId == _npcId
                 && dialogueTalk[iNum].questId == _questId)
             {
-                return dialogueTalk[iNum].dialogueLines;
+                List<string> dialogueList = new List<string>(dialogueTalk[iNum].dialogueLines);
+                return dialogueList;
             }
         }
 

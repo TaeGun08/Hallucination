@@ -43,6 +43,11 @@ public class Shuffle : MonoBehaviour
 
     private void Update()
     {
+        if (shuffleSpeed > 3)
+        {
+            shuffleSpeed = 3;
+        }
+
         if (isShuffle)
         {
             shuffleRot();

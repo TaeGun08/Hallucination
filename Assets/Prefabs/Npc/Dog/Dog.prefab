@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4259345110084357623}
   - component: {fileID: 8432635638617368928}
   m_Layer: 0
-  m_Name: NpcCamera
+  m_Name: DogCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,6 +174,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1351961846219441069, guid: 063fe76e6edd4df48972e8470245a87d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f70efbad7d717384aab7017ef2f515ba, type: 2}
     - target: {fileID: 919132149155446097, guid: 063fe76e6edd4df48972e8470245a87d,
         type: 3}
       propertyPath: m_Name
@@ -207,7 +212,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 063fe76e6edd4df48972e8470245a87d,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3963748303795456190}
+      addedObject: {fileID: 2449599996499279828}
   m_SourcePrefab: {fileID: 100100000, guid: 063fe76e6edd4df48972e8470245a87d, type: 3}
 --- !u!4 &8178859873804112865 stripped
 Transform:
@@ -292,7 +297,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0.2}
---- !u!114 &3963748303795456190
+--- !u!114 &2449599996499279828
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -301,9 +306,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8848153885772745051}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bf9ea23fa6370943b6bd72b8bdfa1b3, type: 3}
+  m_Script: {fileID: 11500000, guid: de3804001f812c14d9bb941e5e28ff17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcId: 0
+  npcId: 1000
+  questId: 64000000
   npcCamera: {fileID: 2808766095231213552}
-  questCheck: 0

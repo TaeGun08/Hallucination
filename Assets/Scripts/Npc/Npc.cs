@@ -5,23 +5,25 @@ using UnityEngine;
 
 public class Npc : MonoBehaviour
 {
-    private GameManager gameManager;
-    private DialogueManager dialogueManager;
-    private QuestManager questManager;
+    protected GameManager gameManager;
+    protected CameraManager cameraManager;
+    protected DialogueManager dialogueManager;
+    protected QuestManager questManager;
 
     [Header("NPC설정")]
-    [SerializeField] private int npcId;
-    [SerializeField] private List<int> questId;
-    [SerializeField] private GameObject npcCamera;
+    [SerializeField] protected int npcId;
+    [SerializeField] protected List<int> questId;
+    [SerializeField] protected GameObject npcCamera;
 
-    private void Start()
+    protected virtual void Start()
     {
         gameManager = GameManager.Instance;
+        cameraManager = gameManager.GetManagers<CameraManager>(0);
         dialogueManager = gameManager.GetManagers<DialogueManager>(2);
         questManager = gameManager.GetManagers<QuestManager>(3);
     }
 
-    private void Update()
+    protected virtual void npc()
     {
         for (int iNum = 0; iNum < questId.Count; iNum++)
         {
@@ -31,18 +33,24 @@ public class Npc : MonoBehaviour
             }
         }
 
-        npcCamera.SetActive(dialogueManager.IsDialogue == false ? false : true);
+
+        if (npcCamera.activeSelf == true && dialogueManager.IsDialogue == false)
+        {
+            npcCamera.SetActive(false);
+        }
     }
 
     /// <summary>
     /// Npc가 가지고 있는 string을 넣어주기 위한 함수
     /// </summary>
-    public int GetNpcId()
-    {     
+    public virtual int GetNpcId()
+    {
+        npcCamera.SetActive(true);
+        cameraManager.GetVirtualCamera(0).gameObject.SetActive(false);
         return npcId;
     }
 
-    public List<int> GetNpcQuestId()
+    public virtual List<int> GetNpcQuestId()
     {
         return questId;
     }

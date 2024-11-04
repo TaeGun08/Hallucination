@@ -75,11 +75,39 @@ public class ObjectChecker : MonoBehaviour
         else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Npc"))
         {
             Npc npcSc = _hit.collider.gameObject.GetComponent<Npc>();
+            ItemQuestNpc itemQuestNpcSc = _hit.collider.gameObject.GetComponent<ItemQuestNpc>();
 
-            if (dialogueManager.IsDialogue == false)
-            {          
-                dialogueManager.StartDialogue(npcSc.GetNpcId(), npcSc.GetNpcQuestId());
+            Vector3 playerPos = gameObject.transform.position;
+            Vector3 npcPos = _hit.collider.gameObject.transform.position;
+
+            if (dialogueManager.IsDialogue == false && itemQuestNpcSc != null)
+            {
+                itemQuestNpcSc.getInven(inventory);
+                playerNpcDistance(playerPos, npcPos);
             }
+
+            if (dialogueManager.IsDialogue == false && npcSc != null)
+            {
+                dialogueManager.StartDialogue(npcSc.GetNpcId(), npcSc.GetNpcQuestId());
+                playerNpcDistance(playerPos, npcPos);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 대화를 시작하기전 Npc와 떨어트기리 위한 함수
+    /// </summary>
+    /// <param name="_playerPos"></param>
+    /// <param name="_npcPos"></param>
+    private void playerNpcDistance(Vector3 _playerPos, Vector3 _npcPos)
+    {
+        float distance = Vector3.Distance(_playerPos, _npcPos);
+
+        if (distance <= 5)
+        {
+            Vector3 targetPos = _npcPos - (_npcPos - _playerPos).normalized * 3.8f;
+
+            gameObject.transform.position = targetPos;
         }
     }
 }

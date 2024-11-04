@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class ShuffleCup : MonoBehaviour
 {
+    private ShellGame shellGame;
+
+    private Animator anim;
     private Material material;
+
+    private bool timerOn;
+    private float timer;
 
     private bool choice;
     public bool Choice
@@ -21,25 +27,47 @@ public class ShuffleCup : MonoBehaviour
 
     private void Awake()
     {
+        anim = GetComponent<Animator>();
+
         MeshRenderer renderer = GetComponent<MeshRenderer>();
         material = Instantiate(renderer.material);
         renderer.material = material;
     }
 
+    private void Start()
+    {
+        shellGame = transform.GetComponentInParent<ShellGame>();
+    }
+
     private void Update()
     {
-        Ray choiceRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(choiceRay, out RaycastHit hit, 5))
+        if (timerOn == false)
         {
-            if (hit.collider.gameObject == gameObject)
+            timer += Time.deltaTime;
+            if (timer >= 2)
             {
-                material.color = Color.green;
+                anim.SetBool("isShuffle", true);
+                timerOn = false;
             }
         }
-        else if (material.color != Color.white)
+
+        if (shellGame != null && shellGame.ChooseTimer >= 1)
         {
-            material.color = Color.white;
+            Ray choiceRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(choiceRay, out RaycastHit hit, 5))
+            {
+                if (hit.collider.gameObject == gameObject)
+                {
+                    material.color = Color.green;
+                    return;
+                }
+            }
+
+            if (material.color != Color.white)
+            {
+                material.color = Color.white;
+            }
         }
     }
 }

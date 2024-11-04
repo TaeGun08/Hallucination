@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MoveController : MonoBehaviour
 {
+    private GameManager gameManager;
+    private DialogueManager dialogueManager;
+
     private CharacterController characterController; //캐릭터컨트롤러
 
     private PlayerBehaviorCheck playerBehaviorCheck; //플레이어 행동을 체크해주는 스크립트
@@ -24,11 +27,20 @@ public class MoveController : MonoBehaviour
         playerBehaviorCheck = GetComponent<PlayerBehaviorCheck>();
     }
 
+    private void Start()
+    {
+        gameManager = GameManager.Instance;
+        dialogueManager = gameManager.GetManagers<DialogueManager>(2);
+    }
+
     private void Update()
     {
-        rotate();
-        move();
-        gravityVelocity();
+        if (dialogueManager.IsDialogue == false || gameManager.PlayerQuestGame == true)
+        {
+            rotate();
+            move();
+            gravityVelocity();
+        }
     }
 
     private void rotate()

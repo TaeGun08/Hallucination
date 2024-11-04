@@ -13,6 +13,19 @@ public class GameManager : MonoBehaviour
     [Header("게임 정지")]
     [SerializeField] private bool gamePause;
 
+    private bool playerQuestGame;
+    public bool PlayerQuestGame
+    {
+        get
+        {
+            return playerQuestGame;
+        }
+        set
+        {
+            playerQuestGame = value;
+        }
+    }
+
     private void Awake()
     {
         if (Instance == null)
