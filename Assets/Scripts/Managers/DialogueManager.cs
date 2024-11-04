@@ -7,8 +7,7 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager Instance;
-
+    private GameManager gameManager;
     private CameraManager cameraManager;
     private QuestManager questManager;
 
@@ -35,22 +34,11 @@ public class DialogueManager : MonoBehaviour
     }
     private List<int> questId = new List<int>();
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
     private void Start()
     {
-        cameraManager = CameraManager.Instance;
-        questManager = QuestManager.Instance;
+        gameManager = GameManager.Instance;
+        cameraManager = gameManager.GetManagers<CameraManager>(0);
+        questManager = gameManager.GetManagers<QuestManager>(3);
 
         dialogueData = GetComponent<DialogueData>();
 
@@ -139,7 +127,7 @@ public class DialogueManager : MonoBehaviour
             index = 0;
             isDialogue = true;
             dialogueTime = 0;
-            CameraManager.Instance.GetVirtualCamera(0).gameObject.SetActive(false);
+            cameraManager.GetVirtualCamera(0).gameObject.SetActive(false);
             StartCoroutine(dialogueTimer());
             StartCoroutine(FuntionDialogue());
         }

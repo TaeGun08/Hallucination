@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Npc : MonoBehaviour
 {
+    private GameManager gameManager;
+    private DialogueManager dialogueManager;
     private QuestManager questManager;
 
     [Header("NPC¼³Á¤")]
@@ -14,7 +16,9 @@ public class Npc : MonoBehaviour
 
     private void Start()
     {
-        questManager = QuestManager.Instance;
+        gameManager = GameManager.Instance;
+        dialogueManager = gameManager.GetManagers<DialogueManager>(2);
+        questManager = gameManager.GetManagers<QuestManager>(3);
     }
 
     private void Update()
@@ -27,7 +31,7 @@ public class Npc : MonoBehaviour
             }
         }
 
-        npcCamera.SetActive(DialogueManager.Instance.IsDialogue == false ? false : true);
+        npcCamera.SetActive(dialogueManager.IsDialogue == false ? false : true);
     }
 
     /// <summary>

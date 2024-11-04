@@ -45,25 +45,15 @@ public class QuestData
 
 public class QuestManager : MonoBehaviour
 {
-    public static QuestManager Instance;
-
     private QuestGames questGames;
 
     private Dictionary<int, QuestData> quest = new Dictionary<int, QuestData>();
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         questGames = GetComponent<QuestGames>();
 
+        questAdd();
         qusetLoad();
     }
 
@@ -95,10 +85,6 @@ public class QuestManager : MonoBehaviour
         {
             string qeustLoad = PlayerPrefs.GetString("questSaveKey");
             quest = JsonConvert.DeserializeObject<Dictionary<int, QuestData>>(qeustLoad);
-        }
-        else
-        {
-            questAdd();
         }
     }
 

@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 4.53
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1.61
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.617
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,
         type: 3}
@@ -96,6 +96,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8794917857791811226}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 283347298003101204}
   m_SourcePrefab: {fileID: 100100000, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54, type: 3}
 --- !u!1 &2955390939233005593 stripped
 GameObject:
@@ -190,6 +194,7 @@ MonoBehaviour:
   headTrs: {fileID: 8712629832998737620}
   moveSpeed: 1.5
   runSpeed: 3
+  gravity: 9.81
 --- !u!114 &8794917857791811226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,7 +207,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e249413ac92e214c8a0de0d8f1156cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickUpDistance: 1
+  checkDistance: 1
+--- !u!114 &283347298003101204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2955390939233005593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f861b15827e3874288de5040ec484eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slot: 
+  slotObject: []
+  itemImage: {fileID: 0}
+  Instruction: {fileID: 0}
 --- !u!4 &8712629832998737620 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6713665401314958236, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,

@@ -7,10 +7,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    [Header("매니저오브젝트")]
+    [SerializeField] private List<GameObject> managers;
+
     [Header("게임 정지")]
     [SerializeField] private bool gamePause;
-
-    private bool inventoryCheck = false; //인벤토리 씬으로 넘어갔는지 체크하기 위한 변수
 
     private void Awake()
     {
@@ -33,7 +34,6 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         gamePauseCheck();
-        optionWindowOnOff();
     }
 
     /// <summary>
@@ -44,28 +44,27 @@ public class GameManager : MonoBehaviour
         Time.timeScale = gamePause == true ? Time.timeScale = 0 : Time.timeScale = 1;
     }
 
-    private void optionWindowOnOff()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            inventoryCheck = inventoryCheck == false ? true : false;
-
-            if (inventoryCheck == true)
-            {
-                SceneManager.LoadSceneAsync("Inventory");
-            }
-            else
-            {
-                SceneManager.LoadSceneAsync("TestScene");
-            }
-        }
-    }
-
     /// <summary>
     /// 게임 정지 및 활성화
     /// </summary>
     public void GamePause(bool _gamePause)
     {
         gamePause = _gamePause;
+    }
+
+    /// <summary>
+    /// 필요한 매니저를 가져오기 위한 함수
+    /// 0 - CameraManager, 1 - CanvasManager, 2 - DialogueManager, 3 - QuestManager
+    /// </summary>
+    /// <param name="_index"></param>
+    public T GetManagers<T>(uint _index) where T : Component
+    {
+        if (_index < managers.Count)
+        {
+            T manager = managers[(int)_index].GetComponent<T>();
+            return manager;
+        }
+
+        return null;
     }
 }

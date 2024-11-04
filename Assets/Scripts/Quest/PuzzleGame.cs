@@ -5,15 +5,17 @@ using UnityEngine;
 
 public class PuzzleGame : MonoBehaviour
 {
-    private QuestManager questManager;
+    private GameManager gameManager;
     private DialogueManager dialogueManager;
+    private QuestManager questManager;
 
     [SerializeField] private bool puzzleClear;
 
     private void Start()
     {
-        questManager = QuestManager.Instance;
-        dialogueManager = DialogueManager.Instance;
+        gameManager = GameManager.Instance;
+        dialogueManager = gameManager.GetManagers<DialogueManager>(2);
+        questManager = gameManager.GetManagers<QuestManager>(3);
     }
 
     private void Update()

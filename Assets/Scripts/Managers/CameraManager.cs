@@ -5,24 +5,10 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    public static CameraManager Instance;
-
     [Header("버추얼 카메라")]
     [SerializeField] private List<CinemachineVirtualCamera> virtualCamera;
 
     private CinemachinePOV cinemachinePov;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     private void Start()
     {

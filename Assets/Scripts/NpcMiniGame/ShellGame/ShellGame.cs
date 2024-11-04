@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ShellGame : MonoBehaviour
 {
+    private GameManager gameManager;
     private QuestManager questManager;
     private DialogueManager dialogueManager;
 
@@ -36,8 +37,9 @@ public class ShellGame : MonoBehaviour
 
     private void Start()
     {
-        questManager = QuestManager.Instance;
-        dialogueManager = DialogueManager.Instance;
+        gameManager = GameManager.Instance;
+        dialogueManager = gameManager.GetManagers<DialogueManager>(2);
+        questManager = gameManager.GetManagers<QuestManager>(3);
 
         shellGameCamera.SetActive(false);
     }

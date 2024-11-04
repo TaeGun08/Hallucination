@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class SettingManager : MonoBehaviour
 {
-    public static SettingManager Instance;
+    private GameManager gameManager;
+    private CameraManager cameraManager;
 
     public class SaveSetting
     {
@@ -35,16 +36,6 @@ public class SettingManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         settingObject = Instantiate(settingCanvas, transform);
         settingObject.SetActive(false);
 
@@ -62,6 +53,12 @@ public class SettingManager : MonoBehaviour
         closedButton();
         saveSettingCheck();
         saveButton();
+    }
+
+    private void Start()
+    {
+        gameManager = GameManager.Instance;
+        cameraManager = gameManager.GetManagers<CameraManager>(0);
     }
 
     private void Update()
@@ -132,11 +129,11 @@ public class SettingManager : MonoBehaviour
             string setSaveSetting = JsonConvert.SerializeObject(saveSetting);
             PlayerPrefs.SetString("saveSetting", setSaveSetting);
 
-            Screen.SetResolution(1920, 1080, !windowToggle.isOn);
+            Screen.SetResolution(2560, 1440, !windowToggle.isOn);
 
-            if (CameraManager.Instance != null)
+            if (cameraManager != null)
             {
-                CameraManager.Instance.SetMouseSensitivity(sliders[2].value);
+                cameraManager.SetMouseSensitivity(sliders[2].value);
             }
 
             saveCheck = true;

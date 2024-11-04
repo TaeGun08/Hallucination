@@ -6,10 +6,11 @@ using UnityEngine;
 
 public class ObjectChecker : MonoBehaviour
 {
-    private Inventory inventory;
+    private GameManager gameManager;
     private DialogueManager dialogueManager;
 
     private CharacterController characterController;
+    private Inventory inventory;
 
     [Header("전장의 오브젝트를 확인하기 위한 거리")]
     [SerializeField] private float checkDistance;
@@ -20,12 +21,13 @@ public class ObjectChecker : MonoBehaviour
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        inventory = GetComponent<Inventory>();
     }
 
     private void Start()
     {
-        inventory = Inventory.Instance;
-        dialogueManager = DialogueManager.Instance;
+        gameManager = GameManager.Instance;
+        dialogueManager = gameManager.GetManagers<DialogueManager>(2);
 
         screenHeight = Screen.height;
         screenWidth = Screen.width;

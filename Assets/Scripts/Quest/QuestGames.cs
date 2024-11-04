@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class QuestGames : MonoBehaviour
 {
+    private GameManager gameManager;
     private QuestManager questManager;
 
     [SerializeField] private GameObject shellGame;
@@ -11,7 +12,8 @@ public class QuestGames : MonoBehaviour
 
     private void Start()
     {
-        questManager = QuestManager.Instance;
+        gameManager = GameManager.Instance;
+        questManager = gameManager.GetManagers<QuestManager>(3);
     }
 
     public void GameStart(List<int> _questId)
