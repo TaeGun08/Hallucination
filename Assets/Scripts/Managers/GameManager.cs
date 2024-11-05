@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     [Header("게임 정지")]
     [SerializeField] private bool gamePause;
 
+    [Header("생성할 플레이어 오브젝트")]
+    [SerializeField] private GameObject bearPrefab;
+
     private bool playerQuestGame;
     public bool PlayerQuestGame
     {
@@ -63,6 +66,14 @@ public class GameManager : MonoBehaviour
     public void GamePause(bool _gamePause)
     {
         gamePause = _gamePause;
+    }
+
+    /// <summary>
+    /// 플레이어 캐릭터를 생성하기 위한 함수
+    /// </summary>
+    public GameObject CreateBear()
+    {
+        return bearPrefab;
     }
 
     /// <summary>

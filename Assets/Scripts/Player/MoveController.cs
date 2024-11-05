@@ -13,6 +13,13 @@ public class MoveController : MonoBehaviour
 
     [Header("플레이어 움직임 설정")]
     [SerializeField] private Transform headTrs; //캐릭터의 머리 Transform
+    public Transform HeadTrs
+    {
+        get
+        {
+            return headTrs;
+        }
+    }
     [SerializeField] private float moveSpeed; //캐릭터 기본 이동속도
     [SerializeField] private float runSpeed; //캐릭터 달리기 속도
     [SerializeField] private float gravity; //캐릭터의 중력
