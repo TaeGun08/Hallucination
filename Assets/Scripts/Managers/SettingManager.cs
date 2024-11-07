@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingManager : MonoBehaviour
@@ -18,14 +19,27 @@ public class SettingManager : MonoBehaviour
 
     private SaveSetting saveSetting = new SaveSetting();
 
-    [Header("설정 캔버스")]
-    [SerializeField] private GameObject settingCanvas;
-    private GameObject settingObject; // 설정 캔버스의 오브젝트
-    private Button closeButton; // 설정창을 닫는 버튼
-    private List<Slider> sliders = new List<Slider>(); // 배경음, 효과음, 민감도 설정을 위한 슬라이더
-    private List<TMP_Text> valueText = new List<TMP_Text>(); // 설정 값을 표기해줄 텍스트
-    private Toggle windowToggle; // 창모드를 위한 토글
-    private Button settingSaveButton; // 설정 저장 버튼
+    [Header("설정")]
+    [SerializeField] private GameObject setting;
+    [SerializeField] private GameObject settingComponent;
+    public GameObject SettingComponent
+    {
+        get
+        {
+            return settingComponent;
+        }
+        set
+        {
+            settingComponent = value;
+        }
+    }
+    [SerializeField] private Button closeButton; // 설정창을 닫는 버튼
+    [SerializeField] private List<Slider> sliders = new List<Slider>(); // 배경음, 효과음, 민감도 설정을 위한 슬라이더
+   // private List<TMP_Text> valueText = new List<TMP_Text>(); // 설정 값을 표기해줄 텍스트
+    [SerializeField] private Toggle windowToggle; // 창모드를 위한 토글
+    [SerializeField] private Button settingSaveButton; // 설정 저장 버튼
+    [SerializeField] private Button main;
+    private bool check;
 
     private bool saveCheck = false; // 저장했을 때만 값을 넣어주기 위한 함수
     public bool SaveCheck
@@ -36,21 +50,20 @@ public class SettingManager : MonoBehaviour
 
     private void Awake()
     {
-        settingObject = Instantiate(settingCanvas, transform);
-        settingObject.SetActive(false);
+        settingComponent.SetActive(false);
 
-        closeButton = settingObject.transform.GetChild(0).Find("X").GetComponent<Button>();
-
-        for (int iNum = 0; iNum < 3; iNum++)
+        closeButton.onClick.AddListener(() =>
         {
-            sliders.Add(settingObject.transform.GetChild(0).Find("SliderLayout").GetChild(iNum).GetComponent<Slider>());
-            valueText.Add(settingObject.transform.GetChild(0).Find("ValueTextLayout").GetChild(iNum).GetComponent<TMP_Text>());
-        }
+            GameManager.Instance.GamePause(false);
+            Cursor.lockState = CursorLockMode.None;
+            settingComponent.SetActive(false);
+        });
 
-        windowToggle = settingObject.transform.GetChild(0).Find("WindowMode").GetComponent<Toggle>();
-        settingSaveButton = settingObject.transform.GetChild(0).Find("Save").GetComponent<Button>();
+        main.onClick.AddListener(() =>
+        {
+            SceneManager.LoadSceneAsync("MainScene");
+        });
 
-        closedButton();
         saveSettingCheck();
         saveButton();
     }
@@ -63,18 +76,34 @@ public class SettingManager : MonoBehaviour
 
     private void Update()
     {
-        textChange();
-    }
-
-    /// <summary>
-    /// 설정창을 닫는 버튼
-    /// </summary>
-    private void closedButton()
-    {
-        closeButton.onClick.AddListener(() =>
+        //textChange();
+        if (SceneManager.GetActiveScene().name == "MainScene")
         {
-            settingObject.SetActive(false);
-        });
+            main.gameObject.SetActive(false);
+        }
+        else
+        {
+            main.gameObject.SetActive(true);
+        }
+
+        if (settingComponent.activeSelf == false && check == true)
+        {
+            int count = sliders.Count;
+
+            string getSaveSetting = PlayerPrefs.GetString("saveSetting");
+            saveSetting = JsonConvert.DeserializeObject<SaveSetting>(getSaveSetting);
+            for (int iNum = 0; iNum < count; iNum++)
+            {
+                sliders[iNum].value = saveSetting.sliders[iNum];
+            }
+
+            windowToggle.isOn = saveSetting.windowToggle;
+            check = false;
+        }
+        else if (settingComponent.activeSelf == true)
+        {
+            check = true;
+        }
     }
 
     /// <summary>
@@ -93,6 +122,9 @@ public class SettingManager : MonoBehaviour
                 sliders[iNum].value = 0.5f;
                 windowToggle.isOn = false;
             }
+
+            string setSaveSetting = JsonConvert.SerializeObject(saveSetting);
+            PlayerPrefs.SetString("saveSetting", setSaveSetting);
         }
         else
         {
@@ -107,7 +139,7 @@ public class SettingManager : MonoBehaviour
             windowToggle.isOn = saveSetting.windowToggle;
         }
 
-        Screen.SetResolution(1920, 1080, !windowToggle.isOn);
+        Screen.SetResolution(2560, 1440, !windowToggle.isOn);
     }
 
     /// <summary>
@@ -140,15 +172,15 @@ public class SettingManager : MonoBehaviour
         });
     }
 
-    /// <summary>
-    /// 수치를 눈으로 보여주기 위한 텍스트를 실시간으로 수치를 변경하기 위한 함수
-    /// </summary>
-    private void textChange()
-    {
-        valueText[0].text = $"{(sliders[0].value * 100).ToString("F0")}";
-        valueText[1].text = $"{(sliders[1].value * 100).ToString("F0")}";
-        valueText[2].text = $"{sliders[2].value.ToString("F1")}";
-    }
+    ///// <summary>
+    ///// 수치를 눈으로 보여주기 위한 텍스트를 실시간으로 수치를 변경하기 위한 함수
+    ///// </summary>
+    //private void textChange()
+    //{
+    //    valueText[0].text = $"{(sliders[0].value * 100).ToString("F0")}";
+    //    valueText[1].text = $"{(sliders[1].value * 100).ToString("F0")}";
+    //    valueText[2].text = $"{sliders[2].value.ToString("F1")}";
+    //}
 
 
     /// <summary>
@@ -157,7 +189,7 @@ public class SettingManager : MonoBehaviour
     /// <returns></returns>
     public GameObject SettingObject()
     {
-        return settingObject;
+        return setting;
     }
 
     /// <summary>

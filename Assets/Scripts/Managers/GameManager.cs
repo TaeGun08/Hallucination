@@ -9,12 +9,25 @@ public class GameManager : MonoBehaviour
 
     [Header("매니저오브젝트")]
     [SerializeField] private List<GameObject> managers;
+    private QuestManager questManager;
 
     [Header("게임 정지")]
     [SerializeField] private bool gamePause;
 
     [Header("생성할 플레이어 오브젝트")]
     [SerializeField] private GameObject bearPrefab;
+    private GameObject playerObject;
+    public GameObject PlayerObject
+    {
+        get
+        {
+            return playerObject;
+        }
+        set
+        {
+            playerObject = value;
+        }
+    }
 
     private bool playerQuestGame;
     public bool PlayerQuestGame
@@ -26,6 +39,58 @@ public class GameManager : MonoBehaviour
         set
         {
             playerQuestGame = value;
+        }
+    }
+
+    [SerializeField] private EyesUI eyesUI;
+    public EyesUI EyesUISc
+    {
+        get
+        {
+            return eyesUI;
+        }
+        set
+        {
+            eyesUI = value;
+        }
+    }
+    private bool cutSceneLoad;
+    public bool CutSceneLoad
+    {
+        get
+        {
+            return cutSceneLoad;
+        }
+        set
+        {
+            cutSceneLoad = value;
+        }
+    }
+
+    [SerializeField] private GameObject clearUI;
+
+    [SerializeField] private SettingManager option;
+    public SettingManager Option
+    {
+        get
+        {
+            return option;
+        }
+        set
+        {
+            option = value;
+        }
+    }
+    [SerializeField] private GameObject eKeyText;
+    public GameObject EKeyText
+    {
+        get
+        {
+            return eKeyText;
+        }
+        set
+        {
+            eKeyText = value;
         }
     }
 
@@ -44,11 +109,52 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //StartCoroutine(FadeInOut.Instance.functionFade());
+        questManager = transform.Find("QuestManager").GetComponent<QuestManager>();
     }
 
     private void Update()
     {
+        if (eyesUI.EyesCheck == true)
+        {
+            eyesUI.gameObject.SetActive(true);
+        }
+        else
+        {
+            eyesUI.gameObject.SetActive(false);
+        }
+
+        if ((questManager.QuestCheck(100) && questManager.QuestCheck(110) && PlayerPrefs.GetInt("SvaeScene") == 0) ||
+            (questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SvaeScene") == 1))
+        {
+            if (SceneManager.GetActiveScene().name == "MapScene")
+            {
+                clearUI.SetActive(true);
+            }
+            else
+            {
+                clearUI.SetActive(false);
+            }
+        }
+        else
+        {
+            clearUI.SetActive(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (option.SettingComponent.activeSelf == true)
+            {
+                gamePause = false;
+                option.SettingComponent.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                gamePause = true;
+                option.SettingComponent.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
         gamePauseCheck();
     }
 

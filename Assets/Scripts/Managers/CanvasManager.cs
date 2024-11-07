@@ -1,14 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CanvasManager : MonoBehaviour
 {
-    private GameObject gameCanvas; //게임 캔버스
+    [SerializeField] private GameObject gameCanvas; //게임 캔버스
+    [SerializeField] private GameObject mainSceneCanvas;
 
-    private void Awake()
+    private void Update()
     {
-        gameCanvas = transform.GetChild(0).GetComponent<GameObject>();
+        if (SceneManager.GetActiveScene().name == "MainScene")
+        {
+            mainSceneCanvas.SetActive(true);
+        }
+        else
+        {
+            mainSceneCanvas.SetActive(false);
+        }
     }
 
     /// <summary>

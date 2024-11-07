@@ -5,11 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class NextScene : MonoBehaviour
 {
+    private GameManager gameManager;
+
     [SerializeField] int targetFrm = 34;
     private float timer = 0;
 
     private void Start()
     {
+        gameManager = GameManager.Instance;
         StartCoroutine(lodingTime());
     }
 
@@ -24,15 +27,22 @@ public class NextScene : MonoBehaviour
 
         timer = 0;
 
-        while (timer <= 2f)
+        while (timer <= 1f)
         {
             timer += Time.unscaledDeltaTime;
             yield return null;
         }
 
-        if (timer > 2f)
+        if (timer > 1f)
         {
-            SceneManager.LoadSceneAsync("TestScene");
+            if (gameManager.CutSceneLoad == true)
+            {
+                SceneManager.LoadSceneAsync("TeacherCutScene");
+            }
+            else
+            {
+                SceneManager.LoadSceneAsync("MapScene");
+            }
             yield return null;
         }
     }

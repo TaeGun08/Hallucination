@@ -9,10 +9,26 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private List<CinemachineVirtualCamera> virtualCamera;
 
     private CinemachinePOV cinemachinePov;
+    private CinemachinePOV cinemachinePOVB;
 
     private void Start()
     {
         cinemachinePov = virtualCamera[0].GetCinemachineComponent<CinemachinePOV>();
+        cinemachinePOVB = virtualCamera[1].GetCinemachineComponent<CinemachinePOV>();
+    }
+
+    private void Update()
+    {
+        SetMouse();
+    }
+
+    private void SetMouse()
+    {
+        cinemachinePov.m_HorizontalAxis.m_MaxSpeed = GameManager.Instance.Option.GetSlidersValue(2) * 300;
+        cinemachinePov.m_VerticalAxis.m_MaxSpeed = GameManager.Instance.Option.GetSlidersValue(2) * 300;
+
+        cinemachinePOVB.m_HorizontalAxis.m_MaxSpeed = GameManager.Instance.Option.GetSlidersValue(2) * 300;
+        cinemachinePOVB.m_VerticalAxis.m_MaxSpeed = GameManager.Instance.Option.GetSlidersValue(2) * 300;
     }
 
     /// <summary>

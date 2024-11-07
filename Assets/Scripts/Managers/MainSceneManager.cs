@@ -19,5 +19,19 @@ public class MainSceneManager : MonoBehaviour
                 FadeInOut.Instance.SetActive(true);
             });
         });
+
+        buttons[1].onClick.AddListener(() =>
+        {
+            GameManager.Instance.Option.SettingComponent.SetActive(true);
+        });
+
+        buttons[2].onClick.AddListener(() => 
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        });
     }
 }

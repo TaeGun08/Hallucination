@@ -12,8 +12,10 @@ public class ObjectChecker : MonoBehaviour
     private CharacterController characterController;
     private Inventory inventory;
 
-    [Header("전장의 오브젝트를 확인하기 위한 거리")]
+    [Header("전방의 오브젝트를 확인하기 위한 거리")]
     [SerializeField] private float checkDistance;
+
+    [SerializeField] private List<LayerMask> layerMask;
 
     private float screenHeight; //화면 세로 크기
     private float screenWidth; //화면 가로 크기
@@ -49,6 +51,23 @@ public class ObjectChecker : MonoBehaviour
         {
             hitObejct(hit);
         }
+
+        if (Physics.Raycast(pickUpRay, out RaycastHit _hit, checkDistance))
+        {
+            if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Item") ||
+                _hit.collider.gameObject.layer == LayerMask.NameToLayer("HideObject") ||
+                _hit.collider.gameObject.layer == LayerMask.NameToLayer("Npc") ||
+                _hit.collider.gameObject.layer == LayerMask.NameToLayer("Door") ||
+                _hit.collider.gameObject.layer == LayerMask.NameToLayer("Closet") ||
+                _hit.collider.gameObject.layer == LayerMask.NameToLayer("ExitDoor") ||
+                _hit.collider.gameObject.layer == LayerMask.NameToLayer("Sleep"))
+            {
+                gameManager.EKeyText.SetActive(true);
+                return;
+            }
+        }
+
+        gameManager.EKeyText.SetActive(false);
     }
 
     private void hitObejct(RaycastHit _hit)
@@ -61,15 +80,17 @@ public class ObjectChecker : MonoBehaviour
         else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("HideObject"))
         {
             HideObject hideSc = _hit.collider.gameObject.GetComponent<HideObject>();
-
-            if (hideSc.Hide == false)
+            if (hideSc != null)
             {
-                characterController.height = 1;
-                characterController.enabled = false;
-                gameObject.transform.position = hideSc.HideTransform().position;
-                characterController.enabled = true;
-                hideSc.Hide = true;
-                hideSc.PlayerObject(gameObject);
+                if (hideSc.Hide == false)
+                {
+                    characterController.height = 1;
+                    characterController.enabled = false;
+                    gameObject.transform.position = hideSc.HideTransform().position;
+                    characterController.enabled = true;
+                    hideSc.Hide = true;
+                    hideSc.PlayerObject(gameObject);
+                }
             }
         }
         else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Npc"))
@@ -91,6 +112,31 @@ public class ObjectChecker : MonoBehaviour
                 dialogueManager.StartDialogue(npcSc.GetNpcId(), npcSc.GetNpcQuestId());
                 playerNpcDistance(playerPos, npcPos);
             }
+        }
+        else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Door"))
+        {
+            Door doorSc = _hit.collider.GetComponent<Door>();
+            doorSc.Open = true;
+        }
+        else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Closet"))
+        {
+            Closet closetSc = _hit.collider.GetComponent<Closet>();
+            if (closetSc != null)
+            {
+                closetSc.Open = true;
+            }
+        }
+        else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("ExitDoor"))
+        {
+            if (inventory.InveItemCheck(10))
+            {
+
+            }
+        }
+        else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Sleep"))
+        {
+            Sleep sleepSc = _hit.collider.GetComponent<Sleep>();
+            sleepSc.IsSleep();
         }
     }
 

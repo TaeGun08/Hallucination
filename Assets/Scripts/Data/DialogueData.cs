@@ -10,15 +10,24 @@ public class DialogueData : MonoBehaviour
         public int questId;
         public string[] dialogueLines;
 
+        public int cutScene;
+
         public DialogueTalk(int _talkIndex, int _questId, string[] _dialogueLines)
         {
             npcId = _talkIndex;
             questId = _questId;
             dialogueLines = _dialogueLines;
         }
+
+        public DialogueTalk(int _cutScene, string[] _dialogueLines)
+        {
+            cutScene = _cutScene;
+            dialogueLines = _dialogueLines;
+        }
     }
 
     private List<DialogueTalk> dialogueTalk;
+    private List<DialogueTalk> dialogueCutSceneTalk;
 
     private void Awake()
     {
@@ -62,12 +71,34 @@ public class DialogueData : MonoBehaviour
             setDialogueTalk(3000, 201,
             "고마워",
             "다음에 도움이 필요하면 도와줄게"),
+            setDialogueTalk(4000, 0,
+            "나는 개똥벌레",
+            "친구가 없네"),
+            setDialogueTalk(4000, 210,
+            "내 생성 장남감을 찾아줘",
+            "부탁할게"),
+            setDialogueTalk(4000, 211,
+            "고마워",
+            "다음에 도움이 필요하면 도와줄게"),
+        };
+
+        dialogueCutSceneTalk = new List<DialogueTalk>
+        {
+            setDialogueCutSceneTalk(10,            
+            "사탕 먹을 시간이에요",
+            "맛있게 먹고 꿈나라로 갑시다")
         };
     }
 
     private DialogueTalk setDialogueTalk(int _npcId, int questId, params string[] dialogues)
     {
         DialogueTalk newDialogue = new DialogueTalk(_npcId, questId, dialogues);
+        return newDialogue;
+    }
+
+    private DialogueTalk setDialogueCutSceneTalk(int _cutScene, params string[] dialogues)
+    {
+        DialogueTalk newDialogue = new DialogueTalk(_cutScene, dialogues);
         return newDialogue;
     }
 
@@ -85,6 +116,20 @@ public class DialogueData : MonoBehaviour
                 && dialogueTalk[iNum].questId == _questId)
             {
                 List<string> dialogueList = new List<string>(dialogueTalk[iNum].dialogueLines);
+                return dialogueList;
+            }
+        }
+
+        return null;
+    }
+
+    public List<string> GetCutSceneDialogue(int _cutScene)
+    {
+        for (int iNum = 0; iNum < dialogueCutSceneTalk.Count; iNum++)
+        {
+            if (dialogueCutSceneTalk[iNum].cutScene == _cutScene)
+            {
+                List<string> dialogueList = new List<string>(dialogueCutSceneTalk[iNum].dialogueLines);
                 return dialogueList;
             }
         }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CreatePlayer : MonoBehaviour
 {
@@ -22,8 +23,23 @@ public class CreatePlayer : MonoBehaviour
 
     private void createPlayerObject()
     {
-        GameObject playerObject = Instantiate(gameManager.CreateBear(), createTrs.position, createTrs.rotation, transform);
-        MoveController moveController = playerObject.GetComponent<MoveController>();
-        cameraManager.GetVirtualCamera(0).Follow = moveController.HeadTrs;
+        if (SceneManager.GetActiveScene().name != "TeacherCutScene")
+        {
+            GameObject playerObject = Instantiate(gameManager.CreateBear(), createTrs.position, createTrs.rotation, transform);
+            MoveController moveController = playerObject.GetComponent<MoveController>();
+            cameraManager.GetVirtualCamera(0).Follow = moveController.HeadTrs;
+            cameraManager.GetVirtualCamera(0).gameObject.SetActive(true);
+
+            gameManager.PlayerObject = playerObject;
+        }
+        else
+        {
+            GameObject playerObject = Instantiate(gameManager.CreateBear(), createTrs.position, createTrs.rotation, transform);
+            MoveController moveController = playerObject.GetComponent<MoveController>();
+            cameraManager.GetVirtualCamera(1).Follow = moveController.HeadTrs;
+            cameraManager.GetVirtualCamera(1).gameObject.SetActive(true);
+
+            gameManager.PlayerObject = playerObject;
+        }
     }
 }

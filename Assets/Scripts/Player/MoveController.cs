@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MoveController : MonoBehaviour
 {
     private GameManager gameManager;
+    private CameraManager cameraManager;
     private DialogueManager dialogueManager;
 
     private CharacterController characterController; //캐릭터컨트롤러
@@ -25,6 +27,16 @@ public class MoveController : MonoBehaviour
     [SerializeField] private float gravity; //캐릭터의 중력
     private Vector3 moveDir; //캐릭터가 움직이기 위한 vec3값
 
+    private float hasMoveTimer;
+    private bool moveOn;
+    public bool MoveOn
+    {
+        get
+        {
+            return moveOn;
+        }
+    }
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -42,11 +54,29 @@ public class MoveController : MonoBehaviour
 
     private void Update()
     {
-        if (dialogueManager.IsDialogue == false || gameManager.PlayerQuestGame == true)
+        if (moveOn == false)
         {
-            rotate();
-            move();
-            gravityVelocity();
+            hasMoveTimer += Time.deltaTime;
+            if (hasMoveTimer >= 3)
+            {
+                moveOn = true;
+            }
+        }
+        else
+        {
+            if (SceneManager.GetActiveScene().name != "TeacherCutScene")
+            {
+                if (dialogueManager.IsDialogue == false || gameManager.PlayerQuestGame == true)
+                {
+                    rotate();
+                    move();
+                    gravityVelocity();
+                }
+            }
+            else
+            {
+                headTrs.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z - 90f);
+            }
         }
     }
 

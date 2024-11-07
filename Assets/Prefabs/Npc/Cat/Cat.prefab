@@ -266,7 +266,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!136 &1786352003776686083
 CapsuleCollider:
@@ -304,8 +304,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcId: 3000
-  questId: 64000000
+  questId: c8000000
   npcCamera: {fileID: 7619612059543188446}
+  hasQuest: 0
   itemIndex: 1
 --- !u!4 &7714057739529368915 stripped
 Transform:

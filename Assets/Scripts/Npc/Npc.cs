@@ -14,6 +14,7 @@ public class Npc : MonoBehaviour
     [SerializeField] protected int npcId;
     [SerializeField] protected List<int> questId;
     [SerializeField] protected GameObject npcCamera;
+    [SerializeField] protected bool hasQuest;
 
     protected virtual void Start()
     {
@@ -21,6 +22,11 @@ public class Npc : MonoBehaviour
         cameraManager = gameManager.GetManagers<CameraManager>(0);
         dialogueManager = gameManager.GetManagers<DialogueManager>(2);
         questManager = gameManager.GetManagers<QuestManager>(3);
+
+        if (PlayerPrefs.GetInt("SaveScene") == 3)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     protected virtual void npc()
@@ -52,6 +58,11 @@ public class Npc : MonoBehaviour
 
     public virtual List<int> GetNpcQuestId()
     {
-        return questId;
+        if (hasQuest == false)
+        {
+            return questId;
+        }
+
+        return new List<int>() { 0 };
     }
 }

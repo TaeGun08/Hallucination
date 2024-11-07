@@ -154,7 +154,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 2
   m_Radius: 0.6
-  m_SlopeLimit: 45
+  m_SlopeLimit: 100
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
@@ -212,7 +212,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e249413ac92e214c8a0de0d8f1156cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkDistance: 1
+  checkDistance: 1.5
+  layerMask:
+  - serializedVersion: 2
+    m_Bits: 64
+  - serializedVersion: 2
+    m_Bits: 128
+  - serializedVersion: 2
+    m_Bits: 2048
+  - serializedVersion: 2
+    m_Bits: 8192
+  - serializedVersion: 2
+    m_Bits: 16384
+  - serializedVersion: 2
+    m_Bits: 32768
 --- !u!114 &283347298003101204
 MonoBehaviour:
   m_ObjectHideFlags: 0

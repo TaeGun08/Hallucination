@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5d1ef011d0e0494c84729354767b8d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shuffleSpeed: 1
+  shuffleSpeed: 0.5
 --- !u!1 &1750556825081737470
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5d1ef011d0e0494c84729354767b8d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shuffleSpeed: 1
+  shuffleSpeed: 0.5
 --- !u!1 &2108712331273151419
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5d1ef011d0e0494c84729354767b8d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shuffleSpeed: 1
+  shuffleSpeed: 0.5
 --- !u!1 &4397762393355477758
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,13 +36,15 @@ public class QuestGames : MonoBehaviour
             {
                 switch (_questId[iNum])
                 {
+                    case 100:
+                        gameManager.PlayerQuestGame = true;
+                        GameObject puzzle = Instantiate(puzzleGame, new Vector3(0, 0, 0), Quaternion.identity, transform);
+                        break;
                     case 110:
                         gameManager.PlayerQuestGame = true;
-                        GameObject shell = Instantiate(shellGame, new Vector3(5f, 1f, -7f), Quaternion.identity, transform);
+                        GameObject shell = Instantiate(shellGame, new Vector3(52f, 26.5f, -13.5f), Quaternion.identity, transform);
                         ShellGame shellSc = shell.GetComponent<ShellGame>();
                         shellSc.ShellGameStart();
-                        break;
-                    case 200:
                         break;
                 }
             }

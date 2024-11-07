@@ -43,9 +43,9 @@ public class Shuffle : MonoBehaviour
 
     private void Update()
     {
-        if (shuffleSpeed > 3)
+        if (shuffleSpeed > 2)
         {
-            shuffleSpeed = 3;
+            shuffleSpeed = 2;
         }
 
         if (isShuffle)
