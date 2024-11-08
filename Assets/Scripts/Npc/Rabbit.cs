@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rabbit : MonoBehaviour
+public class Rabbit : ItemQuestNpc
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        
+        base.Start();
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public override void getInven(Inventory _inven)
     {
-        
+        base.getInven(_inven);
+        base.questItemCheck(base.npcId, base.questId[0], 211);
     }
 }

@@ -6,9 +6,11 @@ using UnityEngine.UI;
 
 public class EyesUI : MonoBehaviour
 {
+    private QuestManager questManager;
+
     private VerticalLayoutGroup layout;
     [SerializeField] private float spacingSpeed;
-    private bool openOrClose;
+    [SerializeField] private bool openOrClose;
     public bool OpenOrClose
     {
         get
@@ -20,7 +22,7 @@ public class EyesUI : MonoBehaviour
             openOrClose = value;
         }
     }
-    private bool eyesCheck;
+    [SerializeField] private bool eyesCheck;
     public bool EyesCheck
     {
         get
@@ -32,11 +34,15 @@ public class EyesUI : MonoBehaviour
             eyesCheck = value;
         }
     }
-    private int chapterCount;
 
     private void Awake()
     {
         layout = GetComponent<VerticalLayoutGroup>();
+    }
+
+    private void Start()
+    {
+        questManager = GameManager.Instance.GetManagers<QuestManager>(3);
     }
 
     private void Update()
@@ -48,10 +54,13 @@ public class EyesUI : MonoBehaviour
                 if (layout.spacing <= 1700)
                 {
                     layout.spacing += spacingSpeed * Time.deltaTime;
-                }
-                else
-                {
-                    EyesCheck = false;
+
+                    if (layout.spacing >= 1700)
+                    {
+                        layout.spacing = 1700;
+                        openOrClose = true;
+                        eyesCheck = false;
+                    }
                 }
             }
             else
@@ -59,19 +68,27 @@ public class EyesUI : MonoBehaviour
                 if (layout.spacing >= 0)
                 {
                     layout.spacing -= spacingSpeed * Time.deltaTime;
-                }
-                else
-                {
-                    EyesCheck = false;
-                    if (SceneManager.GetActiveScene().name != "TeacherCutScene")
-                    {
-                        GameManager.Instance.CutSceneLoad = true;
-                        ++chapterCount;
-                        PlayerPrefs.SetInt("SaveScene", chapterCount);
-                        PlayerPrefs.Save();
-                    }
 
-                    SceneManager.LoadSceneAsync("LoadingScene");
+                    if (layout.spacing <= 0)
+                    {
+                        layout.spacing = 0;
+
+                        if ((questManager.QuestCheck(100) && questManager.QuestCheck(110) && PlayerPrefs.GetInt("SaveScene") == 0) ||
+                           (questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 1))
+                        {
+                            GameManager.Instance.CutSceneLoad = true;
+                        }
+
+                        FadeInOut.Instance.SetActive(false, () =>
+                        {
+                            SceneManager.LoadSceneAsync("LoadingScene");
+
+                            FadeInOut.Instance.SetActive(true);
+
+                            openOrClose = false;
+                            eyesCheck = false;
+                        });
+                    }
                 }
             }
         }

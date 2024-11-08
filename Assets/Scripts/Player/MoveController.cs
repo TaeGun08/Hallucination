@@ -66,7 +66,7 @@ public class MoveController : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name != "TeacherCutScene")
             {
-                if (dialogueManager.IsDialogue == false || gameManager.PlayerQuestGame == true)
+                if (dialogueManager.IsDialogue == false && gameManager.PlayerQuestGame == false)
                 {
                     rotate();
                     move();

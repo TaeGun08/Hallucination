@@ -18,7 +18,7 @@ public class ShellGame : MonoBehaviour
     private bool gameStart ; //게임 시작 체크
     private bool gameOver; //게임 실패 체크
     private bool gameClear; //게임 성공 체크
-    private bool gameEnd; //게임 종료 체크,
+    private bool gameEnd; //게임 종료 체크
     private float startDelay; //게임 딜레이
     [SerializeField] private float shuffleTime; //컵을 섞을 시간
     public float ShuffleTime
@@ -75,8 +75,15 @@ public class ShellGame : MonoBehaviour
     {
         if (gameClear == true && gameEnd == false)
         {
+            gameManager.PlayerQuestGame = false;
             shellGameClear();
             Destroy(gameObject);
+            return;
+        }
+
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            Cursor.lockState = CursorLockMode.None;
         }
 
         if (gameOver == true)

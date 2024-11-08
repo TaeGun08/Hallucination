@@ -16,16 +16,26 @@ public class PuzzleGame : MonoBehaviour
         gameManager = GameManager.Instance;
         dialogueManager = gameManager.GetManagers<DialogueManager>(2);
         questManager = gameManager.GetManagers<QuestManager>(3);
+
+        Cursor.lockState = CursorLockMode.None;
     }
 
     private void Update()
     {
         if (gameClear == true && questManager.QuestCheck(100) == false)
         {
+            Cursor.lockState = CursorLockMode.Locked;
             questManager.CompleteQuest(100);
             dialogueManager.StartDialogue(1000, new List<int> { 101 });
             questManager.CompleteQuest(101);
+            gameManager.PlayerQuestGame = false;
             Destroy(gameObject);
+            return;
+        }
+
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            Cursor.lockState = CursorLockMode.None;
         }
 
         if (puzzleCheckers[0].Check == true &&

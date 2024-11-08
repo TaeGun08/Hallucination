@@ -78,11 +78,13 @@ public class Teacher : MonoBehaviour
                 chaseTimer = 0;
             }
         }
-        playerTestChase();
+        //playerTestChase();
         playerChase();
         cutScene();
     }
-
+    /// <summary>
+    /// 테스트용
+    /// </summary>
     private void playerTestChase()
     {
         if (currentSceneName != "TeacherCutScene")
@@ -143,7 +145,7 @@ public class Teacher : MonoBehaviour
     /// </summary>
     private void playerChase()
     {
-        if (currentSceneName == "MapScene" && PlayerPrefs.GetInt("SceneSave") >= 3)
+        if (currentSceneName == "MapScene" && PlayerPrefs.GetInt("SaveScene") >= 3)
         {
             bool playerDetected = false;
 
@@ -250,6 +252,7 @@ public class Teacher : MonoBehaviour
             }
             else
             {
+                audioSource.Pause();
                 anim.SetBool("isWalk", false);
                 Vector3 rot = transform.eulerAngles;
                 rot.y = 90;

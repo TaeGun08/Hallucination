@@ -55,7 +55,10 @@ public class SettingManager : MonoBehaviour
         closeButton.onClick.AddListener(() =>
         {
             GameManager.Instance.GamePause(false);
-            Cursor.lockState = CursorLockMode.None;
+            if (SceneManager.GetActiveScene().name != "MainScene")
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
             settingComponent.SetActive(false);
         });
 
@@ -77,7 +80,8 @@ public class SettingManager : MonoBehaviour
     private void Update()
     {
         //textChange();
-        if (SceneManager.GetActiveScene().name == "MainScene")
+        if (SceneManager.GetActiveScene().name == "MainScene" ||
+            SceneManager.GetActiveScene().name == "LodingScene")
         {
             main.gameObject.SetActive(false);
         }

@@ -123,8 +123,8 @@ public class GameManager : MonoBehaviour
             eyesUI.gameObject.SetActive(false);
         }
 
-        if ((questManager.QuestCheck(100) && questManager.QuestCheck(110) && PlayerPrefs.GetInt("SvaeScene") == 0) ||
-            (questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SvaeScene") == 1))
+        if ((questManager.QuestCheck(100) && questManager.QuestCheck(110) && PlayerPrefs.GetInt("SaveScene") == 0) ||
+            (questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 1))
         {
             if (SceneManager.GetActiveScene().name == "MapScene")
             {

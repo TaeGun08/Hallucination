@@ -7,15 +7,6 @@ public class Cat : ItemQuestNpc
     protected override void Start()
     {
         base.Start();
-
-        if (PlayerPrefs.GetInt("SaveScene") == 1)
-        {
-            hasQuest = false;
-        }
-        else
-        {
-            hasQuest = true;
-        }
     }
 
 
