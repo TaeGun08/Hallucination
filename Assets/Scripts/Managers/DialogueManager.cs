@@ -58,14 +58,12 @@ public class DialogueManager : MonoBehaviour
             if (nextSceneTimer >= 2f)
             {
                 nextSceneTimer = 0;
-                if (questManager.QuestCheck(100) && questManager.QuestCheck(110) && PlayerPrefs.GetInt("SaveScene") == 0)
+                if (questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
+                    questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 0)
                 {
                     PlayerPrefs.SetInt("SaveScene", 1);
                 }
-                else if (questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 1)
-                {
-                    PlayerPrefs.SetInt("SaveScene", 2);
-                }
+
                 gameManager.EyesUISc.OpenOrClose = true;
                 gameManager.EyesUISc.EyesCheck = true;
                 gameManager.EyesUISc.gameObject.SetActive(true);
@@ -118,8 +116,8 @@ public class DialogueManager : MonoBehaviour
             StartCoroutine(dialogueTimer());
 
             if (SceneManager.GetActiveScene().name == "TeacherCutScene" &&
-                ((questManager.QuestCheck(100) && questManager.QuestCheck(110) && PlayerPrefs.GetInt("SaveScene") == 0) ||
-            (questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 1)))
+                questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
+                questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 0)
             {
                 nextSceneCheck = true;
             }

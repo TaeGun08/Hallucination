@@ -963,10 +963,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4078537427829532071}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1280, y: -360}
-  m_SizeDelta: {x: 2560, y: 720}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &558933835974457663
 CanvasRenderer:
@@ -990,7 +990,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1456,7 +1456,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 145350fe54615e4458600004ba70e7bf, type: 3}
   - {fileID: 8300000, guid: ffdb5c1b46bf92b48acbd5e125690453, type: 3}
   - {fileID: 8300000, guid: c42e9c7d886e9c24d82aadca43963c2c, type: 3}
-  - {fileID: 8300000, guid: d7ba071a39584c74d893299b0720a193, type: 3}
 --- !u!82 &2296338196512595454
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1725,7 +1724,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 9
   m_TargetDisplay: 0
 --- !u!114 &6412278364719915621
 MonoBehaviour:
@@ -3598,7 +3597,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shellGame: {fileID: 1750556825081737470, guid: 0c77396545b7b5049890384da5d99a0f,
     type: 3}
-  puzzleGame: {fileID: 3936765561875395631, guid: 8533f6b07152640438f3f52b8684e735,
+  puzzleGame: {fileID: 6717817573766034635, guid: fe66d327f82ecef489641eb17b5d0b6c,
     type: 3}
 --- !u!1 &5674083676433885988
 GameObject:
@@ -4507,10 +4506,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4078537427829532071}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1280, y: -1080}
-  m_SizeDelta: {x: 2560, y: 720}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6281989106440666751
 CanvasRenderer:
@@ -4534,7 +4533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -5683,7 +5682,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &3105715755091678769
 MonoBehaviour:
@@ -5869,6 +5868,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spacingSpeed: 1000
+  openOrClose: 0
+  eyesCheck: 0
 --- !u!1 &8584280353849991695
 GameObject:
   m_ObjectHideFlags: 0

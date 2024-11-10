@@ -18,8 +18,8 @@ public class Sleep : MonoBehaviour
 
     public void IsSleep()
     {
-        if ((questManager.QuestCheck(100) && questManager.QuestCheck(110) && PlayerPrefs.GetInt("SaveScene") == 0) ||
-            (questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 1))
+        if (questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
+                    questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 0)
         {
             gameManager.EyesUISc.EyesCheck = true;
             gameManager.EyesUISc.OpenOrClose = true;

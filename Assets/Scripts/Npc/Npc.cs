@@ -14,6 +14,9 @@ public class Npc : MonoBehaviour
     [SerializeField] protected int npcId;
     [SerializeField] protected List<int> questId;
     [SerializeField] protected GameObject npcCamera;
+    [SerializeField] protected List<Texture> matTrxture;
+    [SerializeField] protected SkinnedMeshRenderer rend;
+    protected Material material;
 
     protected virtual void Start()
     {
@@ -21,6 +24,8 @@ public class Npc : MonoBehaviour
         cameraManager = gameManager.GetManagers<CameraManager>(0);
         dialogueManager = gameManager.GetManagers<DialogueManager>(2);
         questManager = gameManager.GetManagers<QuestManager>(3);
+
+        material = rend.material;
     }
 
     protected virtual void npc()

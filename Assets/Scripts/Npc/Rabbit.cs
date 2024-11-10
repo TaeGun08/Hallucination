@@ -7,6 +7,17 @@ public class Rabbit : ItemQuestNpc
     protected override void Start()
     {
         base.Start();
+
+        if (PlayerPrefs.GetInt("SaveScene") == 1)
+        {
+            base.questId[0] = 260;
+            base.material.SetTexture("_BaseMap", base.matTrxture[1]);
+        }
+        else
+        {
+            base.questId[0] = 210;
+            base.material.SetTexture("_BaseMap", base.matTrxture[0]);
+        }
     }
 
 

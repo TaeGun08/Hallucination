@@ -64,7 +64,15 @@ public class SettingManager : MonoBehaviour
 
         main.onClick.AddListener(() =>
         {
-            SceneManager.LoadSceneAsync("MainScene");
+            FadeInOut.Instance.SetActive(false, () =>
+            {
+                SceneManager.LoadSceneAsync("LoadingScene");
+
+                settingComponent.SetActive(false);
+                gameManager.GoMain = true;
+
+                FadeInOut.Instance.SetActive(true);
+            });
         });
 
         saveSettingCheck();

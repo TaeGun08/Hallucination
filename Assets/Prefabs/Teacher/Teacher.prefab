@@ -51,7 +51,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 20
+  m_Radius: 40
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2286912428556245998
 PrefabInstance:
@@ -121,6 +121,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Teacher
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8e9460133f4c4ba40a54a72209f480ca,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -145,6 +150,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 952053650427165058}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 8e9460133f4c4ba40a54a72209f480ca,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7302081892285603766}
   m_SourcePrefab: {fileID: 100100000, guid: 8e9460133f4c4ba40a54a72209f480ca, type: 3}
 --- !u!1 &1404515523513312959 stripped
 GameObject:
@@ -183,7 +192,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 200
@@ -209,15 +218,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 2304
+    m_Bits: 43264
   checkColl: {fileID: 1973898154722599832}
-  angle: 80
-  distance: 20
-  teacherTrs: {fileID: 0}
+  angle: 60
+  distance: 40
   audioClips:
   - {fileID: 8300000, guid: 51385ee243e230040a0127dbe7b92e47, type: 3}
   - {fileID: 8300000, guid: 3d0c7fd9fe8d21141a3f5903fc558164, type: 3}
   - {fileID: 8300000, guid: 18210ab08d560ae4e87bd04ba9ce08d6, type: 3}
+  chaseTimer: 0
+  headTrs: {fileID: 3661051744637852549}
 --- !u!82 &952053650427165058
 AudioSource:
   m_ObjectHideFlags: 0
@@ -238,7 +248,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 3
+  MinDistance: 1
   MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
@@ -314,9 +324,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-7302081892285603766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1404515523513312959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afc02c1f841cd64fac33239be6e19cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1744590434488302597 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8e9460133f4c4ba40a54a72209f480ca,
+    type: 3}
+  m_PrefabInstance: {fileID: 2286912428556245998}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3661051744637852549 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5948668421130174357, guid: 8e9460133f4c4ba40a54a72209f480ca,
     type: 3}
   m_PrefabInstance: {fileID: 2286912428556245998}
   m_PrefabAsset: {fileID: 0}

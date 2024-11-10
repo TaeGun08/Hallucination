@@ -37,24 +37,19 @@ public class AudioManager : MonoBehaviour
                 audioSource.clip = bgmClip[0];
                 audioSource.Play();
             }
-            else if (PlayerPrefs.GetInt("SaveScene") < 2)
+            else if (PlayerPrefs.GetInt("SaveScene") == 0 && SceneManager.GetActiveScene().name == "MapScene")
             {
                 audioSource.clip = bgmClip[1];
                 audioSource.Play();
             }
-            else if (PlayerPrefs.GetInt("SaveScene") == 2 && SceneManager.GetActiveScene().name == "MainScene")
+            else if (PlayerPrefs.GetInt("SaveScene") == 1 && SceneManager.GetActiveScene().name == "MapScene")
             {
                 audioSource.clip = bgmClip[2];
                 audioSource.Play();
             }
-            else if (PlayerPrefs.GetInt("SaveScene") == 2 && SceneManager.GetActiveScene().name == "MainScene")
+            else if (SceneManager.GetActiveScene().name == "TeacherCutScene")
             {
                 audioSource.clip = bgmClip[3];
-                audioSource.Play();
-            }
-            else if (PlayerPrefs.GetInt("SaveScene") == 3)
-            {
-                audioSource.clip = bgmClip[4];
                 audioSource.Play();
             }
         }

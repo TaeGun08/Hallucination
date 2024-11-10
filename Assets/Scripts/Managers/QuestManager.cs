@@ -76,18 +76,10 @@ public class QuestManager : MonoBehaviour
         addQuest(4000, 210, "당근 장난감 찾기", false);
         addQuest(4000, 211, "당근 장난감 주기", false);
 
-        //day2, 3
         addQuest(1000, 150, "2일차 대사", false);
-        addQuest(1000, 151, "3일차 대사", false);
-
         addQuest(2000, 160, "2일차 대사", false);
-        addQuest(2000, 161, "3일차 대사", false);
-        //day1, 3
-        addQuest(3000, 250, "1일차 대사", false);
-        addQuest(3000, 251, "3일차 대사", false);
-        
+        addQuest(3000, 250, "1일차 대사", false);     
         addQuest(4000, 260, "1일차 대사", false);
-        addQuest(4000, 261, "3일차 대사", false);
     }
 
     /// <summary>

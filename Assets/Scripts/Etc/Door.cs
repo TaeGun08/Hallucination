@@ -20,6 +20,19 @@ public class Door : MonoBehaviour
             open = value;
         }
     }
+    [SerializeField] private bool teacherRoomOpen;
+    public bool TeacherRoomOpen
+    {
+        get
+        {
+            return teacherRoomOpen;
+        }
+        set
+        {
+            teacherRoomOpen = value;
+        }
+    }
+
     private float timer;
 
     private void Awake()
@@ -30,18 +43,21 @@ public class Door : MonoBehaviour
 
     private void Update()
     {
-        if (open == true)
+        if (teacherRoomOpen == false)
         {
-            timer += Time.deltaTime;
-            coll.isTrigger = true;
-            if (timer >= 3)
+            if (open == true)
             {
-                coll.isTrigger = false;
-                open = false;
-                timer = 0;
+                timer += Time.deltaTime;
+                coll.isTrigger = true;
+                if (timer >= 3)
+                {
+                    coll.isTrigger = false;
+                    open = false;
+                    timer = 0;
+                }
             }
-        }
 
-        anim.SetBool("isOpen", open);
+            anim.SetBool("isOpen", open);
+        }
     }
 }

@@ -9,6 +9,18 @@ public class Inventory : MonoBehaviour
     [Header("인벤토리")]
     [SerializeField] private int slotIndex;
     [SerializeField] private List<int> slot;
+    private int escapeKeyCount;
+    public int EscapeKeyCount
+    {
+        get
+        {
+            return escapeKeyCount;
+        }
+        set
+        {
+            escapeKeyCount = value;
+        }
+    }
 
     private void Awake()
     {
@@ -59,6 +71,10 @@ public class Inventory : MonoBehaviour
         {
             if (slot[iNum] == -1)
             {
+                if (_index == 10)
+                {
+                    escapeKeyCount++;
+                }
                 slot[iNum] = _index;
                 break;
             }

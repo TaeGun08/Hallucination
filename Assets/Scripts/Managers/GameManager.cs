@@ -93,6 +93,18 @@ public class GameManager : MonoBehaviour
             eKeyText = value;
         }
     }
+    private bool goMain;
+    public bool GoMain
+    {
+        get
+        {
+            return goMain;
+        }
+        set
+        {
+            goMain = value;
+        }
+    }
 
     private void Awake()
     {
@@ -123,8 +135,8 @@ public class GameManager : MonoBehaviour
             eyesUI.gameObject.SetActive(false);
         }
 
-        if ((questManager.QuestCheck(100) && questManager.QuestCheck(110) && PlayerPrefs.GetInt("SaveScene") == 0) ||
-            (questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 1))
+        if (questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
+                    questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 0)
         {
             if (SceneManager.GetActiveScene().name == "MapScene")
             {
@@ -140,7 +152,7 @@ public class GameManager : MonoBehaviour
             clearUI.SetActive(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().name == "MapScene")
         {
             if (option.SettingComponent.activeSelf == true)
             {

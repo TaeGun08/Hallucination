@@ -35,13 +35,36 @@ public class NextScene : MonoBehaviour
 
         if (timer > 1f)
         {
-            if (gameManager.CutSceneLoad == true)
+            if (gameManager.GoMain == true)
             {
-                SceneManager.LoadSceneAsync("TeacherCutScene");
+                FadeInOut.Instance.SetActive(false, () =>
+                {
+                    SceneManager.LoadSceneAsync("MainScene");
+
+                    gameManager.GoMain = false;
+
+                    FadeInOut.Instance.SetActive(true);
+                });
+            }
+            else if (gameManager.CutSceneLoad == true)
+            {
+                FadeInOut.Instance.SetActive(false, () =>
+                {
+                    SceneManager.LoadSceneAsync("TeacherCutScene");
+
+                    gameManager.CutSceneLoad = false;
+
+                    FadeInOut.Instance.SetActive(true);
+                });
             }
             else
             {
-                SceneManager.LoadSceneAsync("MapScene");
+                FadeInOut.Instance.SetActive(false, () =>
+                {
+                    SceneManager.LoadSceneAsync("MapScene");
+
+                    FadeInOut.Instance.SetActive(true);
+                });
             }
             yield return null;
         }

@@ -214,18 +214,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   checkDistance: 1.5
   layerMask:
-  - serializedVersion: 2
-    m_Bits: 64
-  - serializedVersion: 2
-    m_Bits: 128
-  - serializedVersion: 2
-    m_Bits: 2048
-  - serializedVersion: 2
-    m_Bits: 8192
-  - serializedVersion: 2
-    m_Bits: 16384
-  - serializedVersion: 2
-    m_Bits: 32768
+    serializedVersion: 2
+    m_Bits: 188608
 --- !u!114 &283347298003101204
 MonoBehaviour:
   m_ObjectHideFlags: 0

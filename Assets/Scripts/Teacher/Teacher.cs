@@ -15,11 +15,19 @@ public class Teacher : MonoBehaviour
     [Header("몬스터 설정")]
     [SerializeField] private LayerMask obstacleMask; // 장애물 레이어
     [SerializeField] private Collider checkColl; //콜라이더에 들어온 오브젝트를 체크하는 용도
-    private Transform playerTrs; //플레이어의 위치
-    [SerializeField, Range(0f, 360f)] private float angle = 45f; // 시야 각도
-    [SerializeField] private float distance = 10f; // 인식 거리
+    [SerializeField, Range(0f, 360f)] private float angle; // 시야 각도
+    [SerializeField] private float distance; // 인식 거리
     private string currentSceneName;
-    [SerializeField] private TeacherPos teacherTrs;
+    private TeacherPos teacherPos;
+    public TeacherPos TeacherPos
+    {
+        set
+        {
+            teacherPos = value;
+        }
+    }
+    private bool randomPosCheck;
+    private int randomNumber;
     private bool stopTeacher;
     private bool animChange;
     private float changeAnimTimer;
@@ -27,10 +35,10 @@ public class Teacher : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private List<AudioClip> audioClips;
     private bool chaseCheck;
+    private bool isChase;
     [SerializeField] private float chaseTimer;
 
-    // 애니메이션 체크
-    private bool isWalk;
+    [SerializeField] private Transform headTrs;
 
     private void OnDrawGizmos()
     {
@@ -76,68 +84,12 @@ public class Teacher : MonoBehaviour
             if (chaseTimer <= 0)
             {
                 chaseTimer = 0;
+                chaseCheck = false;
             }
         }
-        //playerTestChase();
+
         playerChase();
         cutScene();
-    }
-    /// <summary>
-    /// 테스트용
-    /// </summary>
-    private void playerTestChase()
-    {
-        if (currentSceneName != "TeacherCutScene")
-        {
-            bool playerDetected = false;
-
-            Collider[] checkColl = Physics.OverlapSphere(transform.position, 20);
-
-            if (checkColl != null)
-            {
-                foreach (Collider coll in checkColl)
-                {
-                    if (coll.gameObject.layer == LayerMask.NameToLayer("Player"))
-                    {
-                        Vector3 directionToPlayer = (coll.transform.position - transform.position).normalized;
-
-                        if (Vector3.Angle(transform.forward, directionToPlayer) < angle / 2)
-                        {
-                            if (!Physics.Raycast(transform.position, directionToPlayer, distance, obstacleMask))
-                            {
-                                if (chaseCheck == false)
-                                {
-                                    chaseTimer = 15;
-                                    StartCoroutine(audioPlaying());
-                                    chaseCheck = true;
-                                }
-                                anim.SetBool("isFastWalk", true);
-                                agent.SetDestination(coll.transform.position);
-                                playerDetected = true;
-                            }
-                        }
-                    }
-
-                    if (coll.gameObject.layer == LayerMask.NameToLayer("Door"))
-                    {
-                        float distan = Vector3.Distance(transform.position, coll.transform.position);
-                        if (distan <= 5)
-                        {
-                            Door doorSc = coll.GetComponent<Door>();
-                            doorSc.Open = true;
-                        }
-                    }
-                }
-            }
-
-            if (!playerDetected && chaseCheck && chaseTimer <= 0)
-            {
-                audioSource.clip = audioClips[0];
-                audioSource.Play();
-                chaseCheck = false;
-                anim.SetBool("isFastWalk", false);
-            }
-        }
     }
 
     /// <summary>
@@ -145,50 +97,73 @@ public class Teacher : MonoBehaviour
     /// </summary>
     private void playerChase()
     {
-        if (currentSceneName == "MapScene" && PlayerPrefs.GetInt("SaveScene") >= 3)
+        if (currentSceneName == "MapScene" && PlayerPrefs.GetInt("SaveScene") == 1)
         {
             bool playerDetected = false;
+            bool playerChaseCheck = false;
 
-            Collider[] checkColl = Physics.OverlapSphere(transform.position, 20);
+            Collider[] checkColl = Physics.OverlapSphere(transform.position, distance);
 
-            if (checkColl != null)
+            foreach (Collider coll in checkColl)
             {
-                foreach (Collider coll in checkColl)
+                if (coll.gameObject.layer == LayerMask.NameToLayer("Door"))
                 {
-                    if (coll.gameObject.layer == LayerMask.NameToLayer("Player"))
+                    float distan = Vector3.Distance(coll.transform.position, transform.position);
+                    if (distan <= 4)
                     {
-                        Vector3 directionToPlayer = (coll.transform.position - transform.position).normalized;
-
-                        if (Vector3.Angle(transform.forward, directionToPlayer) < angle / 2)
+                        Door doorSc = coll.GetComponent<Door>();
+                        if (doorSc.TeacherRoomOpen == false)
                         {
-                            if (!Physics.Raycast(transform.position, directionToPlayer, distance, obstacleMask))
-                            {
-                                if (chaseCheck == false)
-                                {
-                                    chaseTimer = 15;
-                                    StartCoroutine(audioPlaying());
-                                    chaseCheck = true;
-                                }
-                                anim.SetBool("isFastWalk", true);
-                                agent.SetDestination(coll.transform.position);
-                                playerDetected = true;
-                            }
+                            doorSc.Open = true;
                         }
                     }
+                }
 
-                    if (coll.gameObject.layer == LayerMask.NameToLayer("Door"))
+                if (coll.gameObject.layer == LayerMask.NameToLayer("Player"))
+                {
+                    playerChaseCheck = true;
+
+                    Vector3 directionToPlayer = (coll.transform.position - transform.position).normalized;
+                    float checkDistance = Vector3.Distance(coll.transform.position, transform.position);
+
+                    if (Vector3.Angle(transform.forward, directionToPlayer) < angle / 2 || checkDistance <= 7)
                     {
-                        float distan = Vector3.Distance(transform.position, coll.transform.position);
-                        if (distan <= 5)
+                        if (!Physics.Raycast(new Vector3(transform.position.x, headTrs.position.y, transform.position.z), directionToPlayer, checkDistance, obstacleMask))
                         {
-                            Door doorSc = coll.GetComponent<Door>();
-                            doorSc.Open = true;
+                            if (chaseCheck == false && isChase == false)
+                            {
+                                chaseTimer = 15;
+                                StartCoroutine(audioPlaying());
+                                chaseCheck = true;
+                                isChase = true;
+                            }
+
+                            agent.speed = 4;
+                            anim.SetBool("isFastWalk", true);
+                            agent.SetDestination(coll.transform.position);
+                            playerDetected = true;
+                        }
+                        else
+                        {
+                            isChase = false;
+                        }
+
+                        if (isChase == true)
+                        {
+                            agent.SetDestination(coll.transform.position);
                         }
                     }
                 }
             }
 
-            if (!playerDetected && chaseCheck && chaseTimer <= 0)
+            if (playerChaseCheck == false)
+            {
+                isChase = false;
+            }
+
+            setRandomPos();
+
+            if (playerDetected == false && chaseCheck == false && chaseTimer <= 0 && isChase == false)
             {
                 audioSource.clip = audioClips[0];
                 audioSource.Play();
@@ -198,6 +173,45 @@ public class Teacher : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 랜덤한 위치를 넣어주기 위한 함수
+    /// </summary>
+    private void setRandomPos()
+    {
+        if (chaseCheck == false && isChase == false)
+        {
+            if (randomPosCheck == true)
+            {
+                Vector3 myPos = transform.position;
+                myPos.y = 0;
+                Vector3 arrivalPos = teacherPos.TeacherTrs[randomNumber].position;
+                arrivalPos.y = 0;
+
+                float distan = Vector3.Distance(arrivalPos, myPos);
+
+                if (distan >= 1f)
+                {
+                    agent.SetDestination(teacherPos.TeacherTrs[randomNumber].position);
+                }
+                else
+                {
+                    randomPosCheck = false;
+                }
+            }
+            else
+            {
+                agent.speed = 3;
+                randomNumber = Random.Range(0, teacherPos.TeacherTrs.Count);
+                anim.SetBool("isWalk", true);
+                randomPosCheck = true;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 상황에 맞는 사운드를 실행시키기 위한 함수
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator audioPlaying()
     {
         audioSource.Pause();
@@ -229,11 +243,14 @@ public class Teacher : MonoBehaviour
             {
                 foreach (var door in checkColl)
                 {
-                    float distan = Vector3.Distance(transform.position, door.transform.position);
-                    if (distan <= 5)
+                    float distan = Vector3.Distance(door.transform.position, transform.position);
+                    if (distan <= 4)
                     {
                         Door doorSc = door.GetComponent<Door>();
-                        doorSc.Open = true;
+                        if (doorSc.TeacherRoomOpen == false)
+                        {
+                            doorSc.Open = true;
+                        }
                     }
                 }
             }

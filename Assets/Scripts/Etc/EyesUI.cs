@@ -73,20 +73,20 @@ public class EyesUI : MonoBehaviour
                     {
                         layout.spacing = 0;
 
-                        if ((questManager.QuestCheck(100) && questManager.QuestCheck(110) && PlayerPrefs.GetInt("SaveScene") == 0) ||
-                           (questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 1))
+                        if (questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
+                    questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 0)
                         {
                             GameManager.Instance.CutSceneLoad = true;
                         }
 
                         FadeInOut.Instance.SetActive(false, () =>
                         {
+                            openOrClose = false;
+                            eyesCheck = false;
+
                             SceneManager.LoadSceneAsync("LoadingScene");
 
                             FadeInOut.Instance.SetActive(true);
-
-                            openOrClose = false;
-                            eyesCheck = false;
                         });
                     }
                 }

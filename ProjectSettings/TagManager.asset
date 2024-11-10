@@ -14,7 +14,7 @@ TagManager:
   - Npc
   - Item
   - Wall
-  - Monster
+  - Teacher
   - Ground
   - HideObject
   - ShuffleCup
@@ -22,7 +22,7 @@ TagManager:
   - Sleep
   - Closet
   - Puzzle
-  - 
+  - ExitDoor
   - 
   - 
   - 
