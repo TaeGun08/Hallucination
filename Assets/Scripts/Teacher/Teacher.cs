@@ -126,9 +126,20 @@ public class Teacher : MonoBehaviour
                     Vector3 directionToPlayer = (coll.transform.position - transform.position).normalized;
                     float checkDistance = Vector3.Distance(coll.transform.position, transform.position);
 
-                    if (Vector3.Angle(transform.forward, directionToPlayer) < angle / 2 || checkDistance <= 7)
+                    if (Vector3.Angle(transform.forward, directionToPlayer) < angle / 2 || checkDistance <= 10)
                     {
-                        if (!Physics.Raycast(new Vector3(transform.position.x, headTrs.position.y, transform.position.z), directionToPlayer, checkDistance, obstacleMask))
+                        if (checkDistance <= 2)
+                        {
+                            FadeInOut.Instance.SetActive(false, () =>
+                            {
+                                SceneManager.LoadSceneAsync("LoadingScene");
+
+                                GameManager.Instance.GameOver = true;
+
+                                FadeInOut.Instance.SetActive(true);
+                            });
+                        }
+                        else if (!Physics.Raycast(new Vector3(transform.position.x, headTrs.position.y, transform.position.z), directionToPlayer, checkDistance, obstacleMask))
                         {
                             if (chaseCheck == false && isChase == false)
                             {
@@ -138,7 +149,7 @@ public class Teacher : MonoBehaviour
                                 isChase = true;
                             }
 
-                            agent.speed = 4;
+                            agent.speed = 4.5f;
                             anim.SetBool("isFastWalk", true);
                             agent.SetDestination(coll.transform.position);
                             playerDetected = true;
@@ -200,7 +211,7 @@ public class Teacher : MonoBehaviour
             }
             else
             {
-                agent.speed = 3;
+                agent.speed = 4;
                 randomNumber = Random.Range(0, teacherPos.TeacherTrs.Count);
                 anim.SetBool("isWalk", true);
                 randomPosCheck = true;

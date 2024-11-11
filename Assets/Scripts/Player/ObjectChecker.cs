@@ -9,6 +9,7 @@ public class ObjectChecker : MonoBehaviour
 {
     private GameManager gameManager;
     private DialogueManager dialogueManager;
+    private QuestManager questManager;
 
     private CharacterController characterController;
     private Inventory inventory;
@@ -17,9 +18,6 @@ public class ObjectChecker : MonoBehaviour
     [SerializeField] private float checkDistance;
 
     [SerializeField] private LayerMask layerMask;
-
-    private float screenHeight; //화면 세로 크기
-    private float screenWidth; //화면 가로 크기
 
     private void Awake()
     {
@@ -36,9 +34,7 @@ public class ObjectChecker : MonoBehaviour
 
         gameManager = GameManager.Instance;
         dialogueManager = gameManager.GetManagers<DialogueManager>(2);
-
-        screenHeight = Screen.height;
-        screenWidth = Screen.width;
+        questManager = gameManager.GetManagers<QuestManager>(3);
     }
 
     private void Update()
@@ -51,20 +47,30 @@ public class ObjectChecker : MonoBehaviour
     /// </summary>
     private void objectCheck()
     {
-        Ray pickUpRay = Camera.main.ScreenPointToRay(new Vector3(screenWidth * 0.5f, screenHeight * 0.5f));
+        Ray pickUpRay = Camera.main.ScreenPointToRay(new Vector3(gameManager.RenderTexture.width * 0.5f, gameManager.RenderTexture.height * 0.5f));
 
-        if (Input.GetKeyDown(KeyCode.E) && Physics.Raycast(pickUpRay, out RaycastHit hit, checkDistance))
+        if (Input.GetKeyDown(KeyCode.E) && Physics.Raycast(pickUpRay, out RaycastHit hit, checkDistance, layerMask))
         {
             hitObejct(hit);
         }
 
-        if (Physics.Raycast(pickUpRay, checkDistance, layerMask))
+        if (Physics.Raycast(pickUpRay, out RaycastHit hitCheck, checkDistance, layerMask))
         {
-            gameManager.EKeyText.SetActive(true);
-            return;
+            if ((PlayerPrefs.GetInt("SaveScene") == 1 && hitCheck.collider.gameObject.layer == LayerMask.NameToLayer("Sleep")) ||
+                !(questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
+                    questManager.QuestCheck(200) && questManager.QuestCheck(210)) && hitCheck.collider.gameObject.layer == LayerMask.NameToLayer("Sleep"))
+            {
+                gameManager.EKeyText.SetActive(false);
+            }
+            else
+            {
+                gameManager.EKeyText.SetActive(true);
+            }
         }
-
-        gameManager.EKeyText.SetActive(false);
+        else
+        {
+            gameManager.EKeyText.SetActive(false);
+        }
     }
 
     private void hitObejct(RaycastHit _hit)
@@ -134,9 +140,10 @@ public class ObjectChecker : MonoBehaviour
         }
         else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("ExitDoor"))
         {
+            EscapeDoor escapeDoorSc = _hit.collider.GetComponent<EscapeDoor>();
             if (inventory.InveItemCheck(11))
             {
-
+                escapeDoorSc.Open = true;
             }
         }
         else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Sleep"))

@@ -59,11 +59,23 @@ public class QuestManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 퀘스트 추가를 간결하게 하기 위한 함수
+    /// </summary>
+    /// <param name="_npcId"></param>
+    /// <param name="_questId"></param>
+    /// <param name="_questName"></param>
+    /// <param name="_questClear"></param>
+    private void addQuest(int _npcId, int _questId, string _questName, bool _questClear)
+    {
+        quest.Add(_questId, new QuestData(_npcId, _questId, _questName, _questClear));
+    }
+
+    /// <summary>
     /// 퀘스트 데이터가 없다면 추가하는 함수
     /// </summary>
     private void questAdd()
     {
-        addQuest(1000, 100, "퍼즐 게임",  false);
+        addQuest(1000, 100, "퍼즐 게임", false);
         addQuest(1000, 101, "퍼즐 게임 클리어", false);
 
         addQuest(2000, 110, "컵 게임", false);
@@ -78,20 +90,8 @@ public class QuestManager : MonoBehaviour
 
         addQuest(1000, 150, "2일차 대사", false);
         addQuest(2000, 160, "2일차 대사", false);
-        addQuest(3000, 250, "1일차 대사", false);     
+        addQuest(3000, 250, "1일차 대사", false);
         addQuest(4000, 260, "1일차 대사", false);
-    }
-
-    /// <summary>
-    /// 퀘스트 추가를 간결하게 하기 위한 함수
-    /// </summary>
-    /// <param name="_npcId"></param>
-    /// <param name="_questId"></param>
-    /// <param name="_questName"></param>
-    /// <param name="_questClear"></param>
-    private void addQuest(int _npcId, int _questId, string _questName, bool _questClear)
-    {
-        quest.Add(_questId, new QuestData(_npcId, _questId, _questName, _questClear));
     }
 
     /// <summary>
@@ -169,5 +169,14 @@ public class QuestManager : MonoBehaviour
     public QuestGames GetQuestGames()
     {
         return questGames;
+    }
+
+    /// <summary>
+    /// 퀘스트 데이터를 초기화하기 위한 함수
+    /// </summary>
+    public void ResetQuestData()
+    {
+        quest = new Dictionary<int, QuestData>();
+        questAdd();
     }
 }

@@ -29,6 +29,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField] private RenderTexture renderTexture;
+    public RenderTexture RenderTexture
+    {
+        get
+        {
+            return renderTexture;
+        }
+        set
+        {
+            renderTexture = value;
+        }
+    }
+
     private bool playerQuestGame;
     public bool PlayerQuestGame
     {
@@ -105,6 +118,30 @@ public class GameManager : MonoBehaviour
             goMain = value;
         }
     }
+    private bool goDemoScene;
+    public bool GoDemoScene
+    {
+        get
+        {
+            return goDemoScene;
+        }
+        set
+        {
+            goDemoScene = value;
+        }
+    }
+    private bool gameOver;
+    public bool GameOver
+    {
+        get
+        {
+            return gameOver;
+        }
+        set
+        {
+            gameOver = value;
+        }
+    }
 
     private void Awake()
     {
@@ -126,6 +163,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (SceneManager.GetActiveScene().name == "DemoEndingScene" ||
+            SceneManager.GetActiveScene().name == "GameOverScene")
+        {
+            return;
+        }
+
         if (eyesUI.EyesCheck == true)
         {
             eyesUI.gameObject.SetActive(true);
@@ -150,6 +193,14 @@ public class GameManager : MonoBehaviour
         else
         {
             clearUI.SetActive(false);
+        }
+
+        if (EscapeDoor.Instance != null)
+        {
+            if (EscapeDoor.Instance.Open == true)
+            {
+                return;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape) && SceneManager.GetActiveScene().name == "MapScene")

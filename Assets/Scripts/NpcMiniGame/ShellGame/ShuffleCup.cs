@@ -53,7 +53,16 @@ public class ShuffleCup : MonoBehaviour
 
         if (shellGame != null && shellGame.ChooseTimer >= 1)
         {
-            Ray choiceRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Vector3 mousePosition = Input.mousePosition;
+
+            float xRatio = (float)GameManager.Instance.RenderTexture.width / Screen.width;
+            float yRatio = (float)GameManager.Instance.RenderTexture.height / Screen.height;
+
+            mousePosition.x *= xRatio;
+            mousePosition.y *= yRatio;
+            mousePosition.z = 10f;
+
+            Ray choiceRay = Camera.main.ScreenPointToRay(mousePosition);
 
             if (Physics.Raycast(choiceRay, out RaycastHit hit, 5))
             {

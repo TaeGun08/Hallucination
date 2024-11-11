@@ -70,6 +70,7 @@ public class SettingManager : MonoBehaviour
 
                 settingComponent.SetActive(false);
                 gameManager.GoMain = true;
+                gameManager.GamePause(false);
 
                 FadeInOut.Instance.SetActive(true);
             });
@@ -218,6 +219,8 @@ public class SettingManager : MonoBehaviour
                 return sliders[1].value;
             case 2:
                 return sliders[2].value;
+            case 3:
+                return sliders[3].value;
         }
 
         return 0;

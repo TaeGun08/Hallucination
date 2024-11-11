@@ -35,7 +35,29 @@ public class NextScene : MonoBehaviour
 
         if (timer > 1f)
         {
-            if (gameManager.GoMain == true)
+            if (gameManager.GameOver == true)
+            {
+                FadeInOut.Instance.SetActive(false, () =>
+                {
+                    SceneManager.LoadSceneAsync("GameOverScene");
+
+                    gameManager.GameOver = false;
+
+                    FadeInOut.Instance.SetActive(true);
+                });
+            }
+            else if (gameManager.GoDemoScene == true)
+            {
+                FadeInOut.Instance.SetActive(false, () =>
+                {
+                    SceneManager.LoadSceneAsync("DemoEndingScene");
+
+                    gameManager.GoDemoScene = false;
+
+                    FadeInOut.Instance.SetActive(true);
+                });
+            }
+            else if (gameManager.GoMain == true)
             {
                 FadeInOut.Instance.SetActive(false, () =>
                 {
