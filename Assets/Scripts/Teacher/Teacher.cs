@@ -125,6 +125,7 @@ public class Teacher : MonoBehaviour
 
                     Vector3 directionToPlayer = (coll.transform.position - transform.position).normalized;
                     float checkDistance = Vector3.Distance(coll.transform.position, transform.position);
+                    Vector3 teacherHeadRayPos = new Vector3(transform.position.x, headTrs.position.y, transform.position.z);
 
                     if (Vector3.Angle(transform.forward, directionToPlayer) < angle / 2 || checkDistance <= 10)
                     {
@@ -139,7 +140,7 @@ public class Teacher : MonoBehaviour
                                 FadeInOut.Instance.SetActive(true);
                             });
                         }
-                        else if (!Physics.Raycast(new Vector3(transform.position.x, headTrs.position.y, transform.position.z), directionToPlayer, checkDistance, obstacleMask))
+                        else if (!Physics.Raycast(teacherHeadRayPos, directionToPlayer, checkDistance, obstacleMask))
                         {
                             if (chaseCheck == false && isChase == false)
                             {

@@ -5,6 +5,7 @@ using UnityEngine;
 public class LightColorChange : MonoBehaviour
 {
     private Light lit;
+    private Color color;
 
     private void Awake()
     {
@@ -15,11 +16,18 @@ public class LightColorChange : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("SaveScene") == 1)
         {
-            lit.color = Color.red;
+
+            color.r = 0.5f;
+            color.g = 0.2f;
+            color.b = 0.2f;
+            lit.color = color;
         }
         else
         {
-            lit.color = Color.white;
+            color.r = 1f;
+            color.g = 1f;
+            color.b = 1f;
+            lit.color = color;
         }
     }
 }
