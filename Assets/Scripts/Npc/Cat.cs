@@ -27,12 +27,16 @@ public class Cat : ItemQuestNpc
         base.Update();
         if (base.questId[0] == 201)
         {
-            base.anim.SetBool("isCry", false);
             base.material.SetTexture("_BaseMap", base.matTrxture[1]);
+        }
+
+        if (base.questId[0] == 200)
+        {
+            base.anim.SetBool("isCry", true);
         }
         else
         {
-            base.anim.SetBool("isCry", true);
+            base.anim.SetBool("isCry", false);
         }
     }
 
