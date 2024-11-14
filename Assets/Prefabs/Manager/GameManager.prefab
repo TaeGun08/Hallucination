@@ -3499,6 +3499,7 @@ MonoBehaviour:
   gamePause: 0
   bearPrefab: {fileID: 2955390939233005593, guid: 8e1232ba9ae339b43b6cd953e7a6d3bb,
     type: 3}
+  renderTexture: {fileID: 8400000, guid: 46e0cb333cdd8bc46875afa118c9fd9b, type: 2}
   eyesUI: {fileID: 1829981198887311874}
   clearUI: {fileID: 446602702973241144}
   option: {fileID: 3564660751087199615}
@@ -6288,7 +6289,7 @@ Transform:
   m_GameObject: {fileID: 8615620675875257094}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.529345, y: 3.194736, z: 0.8826612}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6325,7 +6326,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.01
+  near clip plane: 0.3
   far clip plane: 100
   field of view: 60.000004
   orthographic: 0
@@ -6335,7 +6336,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
+  m_TargetTexture: {fileID: 8400000, guid: 46e0cb333cdd8bc46875afa118c9fd9b, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1

@@ -17,6 +17,7 @@ public class Npc : MonoBehaviour
     [SerializeField] protected List<Texture> matTrxture;
     [SerializeField] protected SkinnedMeshRenderer rend;
     protected Material material;
+    protected Animator anim;
 
     protected virtual void Start()
     {
@@ -26,6 +27,7 @@ public class Npc : MonoBehaviour
         questManager = gameManager.GetManagers<QuestManager>(3);
 
         material = rend.material;
+        anim = GetComponent<Animator>();
     }
 
     protected virtual void npc()

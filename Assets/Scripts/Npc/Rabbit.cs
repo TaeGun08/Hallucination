@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Rabbit : ItemQuestNpc
 {
+    [SerializeField] private List<Transform> trs;
+
     protected override void Start()
     {
         base.Start();
@@ -12,11 +14,14 @@ public class Rabbit : ItemQuestNpc
         {
             base.questId[0] = 260;
             base.material.SetTexture("_BaseMap", base.matTrxture[1]);
+            base.anim.SetBool("isHead", true);
+            transform.position = trs[1].position;
         }
         else
         {
             base.questId[0] = 210;
             base.material.SetTexture("_BaseMap", base.matTrxture[0]);
+            transform.position = trs[0].position;
         }
     }
 

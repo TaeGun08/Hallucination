@@ -36,7 +36,7 @@ public class PuzzleMove : MonoBehaviour
 
         mousePosition.x *= xRatio;
         mousePosition.y *= yRatio;
-        mousePosition.z = 10f;
+        mousePosition.z = 2;
 
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
 

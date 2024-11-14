@@ -8,9 +8,11 @@ public class EscapeDoor : MonoBehaviour
     public static EscapeDoor Instance;
 
     private Animator anim;
+    private Collider coll;
 
     [SerializeField] private Animator teacherAnim;
     [SerializeField] private AudioSource teacherAudio;
+    [SerializeField] private GameObject teacher;
 
     private bool open;
     public bool Open
@@ -37,6 +39,7 @@ public class EscapeDoor : MonoBehaviour
             Destroy(gameObject);
         }
         anim = GetComponent<Animator>();
+        coll = GetComponent<Collider>();
     }
 
     private void Update()
@@ -47,6 +50,8 @@ public class EscapeDoor : MonoBehaviour
             teacherAnim.SetBool("isGiveCandy", true);
 
             timer += Time.deltaTime;
+            coll.isTrigger = true;
+            teacher.SetActive(false);
 
             if (timer <= 0.3f && teacherAudio.isPlaying == false)
             {

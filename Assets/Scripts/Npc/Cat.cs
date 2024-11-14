@@ -13,6 +13,7 @@ public class Cat : ItemQuestNpc
         {
             base.questId[0] = 250;
             base.material.SetTexture("_BaseMap", base.matTrxture[2]);
+            base.anim.SetBool("isAngry", true);
         }
         else
         {
@@ -26,7 +27,12 @@ public class Cat : ItemQuestNpc
         base.Update();
         if (base.questId[0] == 201)
         {
+            base.anim.SetBool("isCry", false);
             base.material.SetTexture("_BaseMap", base.matTrxture[1]);
+        }
+        else
+        {
+            base.anim.SetBool("isCry", true);
         }
     }
 

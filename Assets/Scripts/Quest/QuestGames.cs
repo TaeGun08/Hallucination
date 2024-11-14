@@ -38,7 +38,7 @@ public class QuestGames : MonoBehaviour
                 {
                     case 100:
                         gameManager.PlayerQuestGame = true;
-                        GameObject puzzle = Instantiate(puzzleGame, new Vector3(0, 0, 0), Quaternion.identity, transform);
+                        Instantiate(puzzleGame, new Vector3(49.187f, 27f, -14.247f), Quaternion.Euler(0, 180, 0), transform);
                         break;
                     case 110:
                         gameManager.PlayerQuestGame = true;
