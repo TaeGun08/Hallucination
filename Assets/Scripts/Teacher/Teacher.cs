@@ -80,27 +80,31 @@ public class Teacher : MonoBehaviour
 
     private void Update()
     {
-        if (chaseCheck == true)
+        if (dialogueManager.IsDialogue == false)
         {
-            chaseTimer -= Time.deltaTime;
-            if (chaseTimer <= 0)
+            if (chaseCheck == true)
             {
-                chaseTimer = 0;
-                chaseCheck = false;
+                chaseTimer -= Time.deltaTime;
+                if (chaseTimer <= 0)
+                {
+                    chaseTimer = 0;
+                    chaseCheck = false;
+                }
             }
+
+            if (dontStopChase == true)
+            {
+                dontStopChaseTimer += Time.deltaTime;
+                if (dontStopChaseTimer > 10)
+                {
+                    dontStopChase = false;
+                    dontStopChaseTimer = 0;
+                }
+            }
+
+            playerChase();
         }
 
-        if (dontStopChase == true)
-        {
-            dontStopChaseTimer += Time.deltaTime;
-            if (dontStopChaseTimer > 10)
-            {
-                dontStopChase = false;
-                dontStopChaseTimer = 0;
-            }
-        }
-
-        playerChase();
         cutScene();
     }
 
@@ -139,7 +143,7 @@ public class Teacher : MonoBehaviour
                     float checkDistance = Vector3.Distance(coll.transform.position, transform.position);
                     Vector3 teacherHeadRayPos = new Vector3(transform.position.x, headTrs.position.y, transform.position.z);
 
-                    if (dontStopChaseTimer <= 10 && dontStopChase == true)
+                    if (dontStopChaseTimer <= 5 && dontStopChase == true)
                     {
                         agent.SetDestination(coll.transform.position);
                         anim.SetBool("isWalk", false);
