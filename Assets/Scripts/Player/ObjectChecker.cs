@@ -10,8 +10,6 @@ public class ObjectChecker : MonoBehaviour
     private GameManager gameManager;
     private DialogueManager dialogueManager;
     private QuestManager questManager;
-
-    private CharacterController characterController;
     private Inventory inventory;
 
     [Header("전방의 오브젝트를 확인하기 위한 거리")]
@@ -21,7 +19,6 @@ public class ObjectChecker : MonoBehaviour
 
     private void Awake()
     {
-        characterController = GetComponent<CharacterController>();
         inventory = GetComponent<Inventory>();
     }
 
@@ -40,6 +37,11 @@ public class ObjectChecker : MonoBehaviour
     private void Update()
     {
         objectCheck();
+
+        if (dialogueManager.IsDialogue == true)
+        {
+            gameManager.EKeyText.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -47,29 +49,32 @@ public class ObjectChecker : MonoBehaviour
     /// </summary>
     private void objectCheck()
     {
-        Ray pickUpRay = Camera.main.ScreenPointToRay(new Vector3(gameManager.RenderTexture.width * 0.5f, gameManager.RenderTexture.height * 0.5f));
-
-        if (Input.GetKeyDown(KeyCode.E) && Physics.Raycast(pickUpRay, out RaycastHit hit, checkDistance, layerMask))
+        if (dialogueManager.IsDialogue == false)
         {
-            hitObejct(hit);
-        }
+            Ray pickUpRay = Camera.main.ScreenPointToRay(new Vector3(gameManager.RenderTexture.width * 0.5f, gameManager.RenderTexture.height * 0.5f));
 
-        if (Physics.Raycast(pickUpRay, out RaycastHit hitCheck, checkDistance, layerMask))
-        {
-            if ((PlayerPrefs.GetInt("SaveScene") == 1 && hitCheck.collider.gameObject.layer == LayerMask.NameToLayer("Sleep")) ||
-                !(questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
-                    questManager.QuestCheck(200) && questManager.QuestCheck(210)) && hitCheck.collider.gameObject.layer == LayerMask.NameToLayer("Sleep"))
+            if (Input.GetKeyDown(KeyCode.E) && Physics.Raycast(pickUpRay, out RaycastHit hit, checkDistance, layerMask))
             {
-                gameManager.EKeyText.SetActive(false);
+                hitObejct(hit);
+            }
+
+            if (Physics.Raycast(pickUpRay, out RaycastHit hitCheck, checkDistance, layerMask))
+            {
+                if ((PlayerPrefs.GetInt("SaveScene") == 1 && hitCheck.collider.gameObject.layer == LayerMask.NameToLayer("Sleep")) ||
+                    !(questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
+                        questManager.QuestCheck(200) && questManager.QuestCheck(210)) && hitCheck.collider.gameObject.layer == LayerMask.NameToLayer("Sleep"))
+                {
+                    gameManager.EKeyText.SetActive(false);
+                }
+                else
+                {
+                    gameManager.EKeyText.SetActive(true);
+                }
             }
             else
             {
-                gameManager.EKeyText.SetActive(true);
+                gameManager.EKeyText.SetActive(false);
             }
-        }
-        else
-        {
-            gameManager.EKeyText.SetActive(false);
         }
     }
 
@@ -108,12 +113,14 @@ public class ObjectChecker : MonoBehaviour
             {
                 itemQuestNpcSc.getInven(inventory);
                 playerNpcDistance(playerPos, npcPos);
+                gameObject.SetActive(false);
             }
 
             if (dialogueManager.IsDialogue == false && npcSc != null)
             {
                 dialogueManager.StartDialogue(npcSc.GetNpcId(), npcSc.GetNpcQuestId());
                 playerNpcDistance(playerPos, npcPos);
+                gameObject.SetActive(false);
             }
         }
         else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Door"))

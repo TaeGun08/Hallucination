@@ -32,7 +32,12 @@ public class AudioManager : MonoBehaviour
 
         if (audioSource.isPlaying == false)
         {
-            if (SceneManager.GetActiveScene().name == "MainScene")
+            if (SceneManager.GetActiveScene().name == "GameOverScene")
+            {
+                audioSource.clip = bgmClip[4];
+                audioSource.Play();
+            }
+            else if (SceneManager.GetActiveScene().name == "MainScene")
             {
                 audioSource.clip = bgmClip[0];
                 audioSource.Play();

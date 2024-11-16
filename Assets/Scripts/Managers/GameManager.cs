@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [Header("매니저오브젝트")]
     [SerializeField] private List<GameObject> managers;
     private QuestManager questManager;
+    private DialogueManager dialogueManager;
 
     [Header("게임 정지")]
     [SerializeField] private bool gamePause;
@@ -159,6 +160,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         questManager = transform.Find("QuestManager").GetComponent<QuestManager>();
+        dialogueManager = managers[2].GetComponent<DialogueManager>();
     }
 
     private void Update()
@@ -181,7 +183,7 @@ public class GameManager : MonoBehaviour
         if (questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
                     questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 0)
         {
-            if (SceneManager.GetActiveScene().name == "MapScene")
+            if (SceneManager.GetActiveScene().name == "MapScene" && dialogueManager.IsDialogue == false)
             {
                 clearUI.SetActive(true);
             }

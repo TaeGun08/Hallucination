@@ -16,7 +16,7 @@ public class GameOver : MonoBehaviour
         {
             FadeInOut.Instance.SetActive(false, () =>
             {
-                SceneManager.LoadSceneAsync("MapScene");
+                SceneManager.LoadSceneAsync("LoadingScene");
 
                 FadeInOut.Instance.SetActive(true);
             });

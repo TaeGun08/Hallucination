@@ -21,7 +21,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private float textSpeed;
     private List<string> dialogueLine = new List<string>();
     private int index = 0;
-    private bool isDialogue = false;
+    [SerializeField] private bool isDialogue = false;
     public bool IsDialogue
     {
         get
@@ -114,6 +114,7 @@ public class DialogueManager : MonoBehaviour
             isDialogue = false;
             dialogueLine = null;
             StartCoroutine(dialogueTimer());
+            gameManager.PlayerObject.SetActive(true);
 
             if (SceneManager.GetActiveScene().name == "TeacherCutScene" &&
                 questManager.QuestCheck(100) && questManager.QuestCheck(110) &&

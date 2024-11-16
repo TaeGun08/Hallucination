@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -42,6 +43,10 @@ public class Teacher : MonoBehaviour
 
     [SerializeField] private Transform headTrs;
 
+    [SerializeField] private GameObject cameraObejct;
+    private bool cameraOn;
+    private float sceneChange;
+
     private void OnDrawGizmos()
     {
         Vector3 leftBoundary = Quaternion.Euler(0, -angle / 2, 0) * transform.forward;
@@ -76,11 +81,34 @@ public class Teacher : MonoBehaviour
         dialogueManager = gameManager.GetManagers<DialogueManager>(2);
 
         currentSceneName = SceneManager.GetActiveScene().name;
+
+        audioSource.clip = audioClips[0];
+        audioSource.Play();
     }
 
     private void Update()
     {
-        if (dialogueManager.IsDialogue == false)
+        if (cameraOn == true)
+        {
+            float shakeValue = Random.Range(-5f, 5f);
+            cameraObejct.transform.rotation = Quaternion.Euler(cameraObejct.transform.eulerAngles.x, cameraObejct.transform.eulerAngles.y, shakeValue);
+            sceneChange += Time.deltaTime;
+            if (sceneChange >= 2)
+            {
+                cameraOn = false;
+                sceneChange = 0;
+                FadeInOut.Instance.SetActive(false, () =>
+                {
+                    SceneManager.LoadSceneAsync("LoadingScene");
+
+                    GameManager.Instance.GameOver = true;
+
+                    FadeInOut.Instance.SetActive(true);
+                });
+            }
+        }
+
+        if (dialogueManager.IsDialogue == false && cameraOn == false)
         {
             if (chaseCheck == true)
             {
@@ -143,31 +171,27 @@ public class Teacher : MonoBehaviour
                     float checkDistance = Vector3.Distance(coll.transform.position, transform.position);
                     Vector3 teacherHeadRayPos = new Vector3(transform.position.x, headTrs.position.y, transform.position.z);
 
-                    if (dontStopChaseTimer <= 5 && dontStopChase == true)
+                    if (checkDistance <= 3)
+                    {
+                        cameraObejct.SetActive(true);
+                        cameraOn = true;
+                        anim.SetBool("isWalk", false);
+                        anim.SetBool("isFastWalk", false);
+                    }
+                    else if (dontStopChaseTimer <= 5 && dontStopChase == true)
                     {
                         agent.SetDestination(coll.transform.position);
                         anim.SetBool("isWalk", false);
                         anim.SetBool("isFastWalk", true);
                     }
-                    else if (Vector3.Angle(transform.forward, directionToPlayer) < angle / 2 || checkDistance <= 10)
+                    else if (Vector3.Angle(transform.forward, directionToPlayer) < angle / 2 || checkDistance <= 8)
                     {
-                        if (checkDistance <= 2)
-                        {
-                            FadeInOut.Instance.SetActive(false, () =>
-                            {
-                                SceneManager.LoadSceneAsync("LoadingScene");
-
-                                GameManager.Instance.GameOver = true;
-
-                                FadeInOut.Instance.SetActive(true);
-                            });
-                        }
-                        else if (!Physics.Raycast(teacherHeadRayPos, directionToPlayer, checkDistance, obstacleMask))
+                        if (!Physics.Raycast(teacherHeadRayPos, directionToPlayer, checkDistance, obstacleMask))
                         {
                             if (chaseCheck == false && isChase == false && dontStopChase == false)
                             {
                                 chaseTimer = 15;
-                                StartCoroutine(audioPlaying());
+                                StartCoroutine(chaseAudioPlaying());
                                 chaseCheck = true;
                                 isChase = true;
                                 dontStopChase = true;
@@ -203,8 +227,7 @@ public class Teacher : MonoBehaviour
 
             if (playerDetected == false && chaseCheck == false && chaseTimer <= 0 && isChase == false && dontStopChase == false)
             {
-                audioSource.clip = audioClips[0];
-                audioSource.Play();
+                StartCoroutine(walkAudioPlaying());
                 chaseCheck = false;
                 anim.SetBool("isFastWalk", false);
                 anim.SetBool("isWalk", true);
@@ -248,15 +271,33 @@ public class Teacher : MonoBehaviour
     }
 
     /// <summary>
+    /// 발검으 사운드를 실행시키키 위한 함수
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator walkAudioPlaying()
+    {
+        audioSource.Pause();
+
+        audioSource.clip = audioClips[0];
+        audioSource.minDistance = 1;
+        audioSource.maxDistance = 3;
+        audioSource.Play();
+
+        yield return new WaitForSeconds(audioSource.clip.length);
+    }
+
+    /// <summary>
     /// 상황에 맞는 사운드를 실행시키기 위한 함수
     /// </summary>
     /// <returns></returns>
-    private IEnumerator audioPlaying()
+    private IEnumerator chaseAudioPlaying()
     {
         audioSource.Pause();
 
         audioSource.clip = audioClips[1];
         audioSource.loop = false;
+        audioSource.minDistance = 5;
+        audioSource.maxDistance = 10;
         audioSource.Play();
 
         yield return new WaitForSeconds(2);

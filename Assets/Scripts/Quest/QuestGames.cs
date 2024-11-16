@@ -38,13 +38,15 @@ public class QuestGames : MonoBehaviour
                 {
                     case 100:
                         gameManager.PlayerQuestGame = true;
-                        Instantiate(puzzleGame, new Vector3(49.187f, 27f, -14.247f), Quaternion.Euler(0, 180, 0), transform);
+                        Instantiate(puzzleGame, new Vector3(57.5f, 26.5f, -7f), Quaternion.Euler(0, 180, 0), transform);
+                        gameManager.PlayerObject.SetActive(false);
                         break;
                     case 110:
                         gameManager.PlayerQuestGame = true;
-                        GameObject shell = Instantiate(shellGame, new Vector3(52f, 26.5f, -13.5f), Quaternion.identity, transform);
+                        GameObject shell = Instantiate(shellGame, new Vector3(41.6f, 26.5f, -18f), Quaternion.identity, transform);
                         ShellGame shellSc = shell.GetComponent<ShellGame>();
                         shellSc.ShellGameStart();
+                        gameManager.PlayerObject.SetActive(false);
                         break;
                 }
             }

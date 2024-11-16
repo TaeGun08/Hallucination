@@ -19,6 +19,8 @@ public class SettingManager : MonoBehaviour
 
     private SaveSetting saveSetting = new SaveSetting();
 
+    private AudioSource audioSource;
+
     [Header("¼³Á¤")]
     [SerializeField] private GameObject setting;
     [SerializeField] private GameObject settingComponent;
@@ -51,19 +53,22 @@ public class SettingManager : MonoBehaviour
     private void Awake()
     {
         settingComponent.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
 
         closeButton.onClick.AddListener(() =>
         {
             GameManager.Instance.GamePause(false);
+            audioSource.Play();
             if (SceneManager.GetActiveScene().name != "MainScene")
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
-            settingComponent.SetActive(false);
+            settingComponent.SetActive(false);  
         });
 
         main.onClick.AddListener(() =>
         {
+            audioSource.Play();
             FadeInOut.Instance.SetActive(false, () =>
             {
                 SceneManager.LoadSceneAsync("LoadingScene");
@@ -162,6 +167,7 @@ public class SettingManager : MonoBehaviour
     {
         settingSaveButton.onClick.AddListener(() =>
         {
+            audioSource.Play();
             int count = sliders.Count;
 
             for (int iNum = 0; iNum < count; iNum++)

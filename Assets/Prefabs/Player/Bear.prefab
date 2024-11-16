@@ -11,17 +11,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.53
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.61
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.617
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,
         type: 3}
@@ -216,7 +216,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 188608
-  renderTexture: {fileID: 8400000, guid: 46e0cb333cdd8bc46875afa118c9fd9b, type: 2}
 --- !u!114 &283347298003101204
 MonoBehaviour:
   m_ObjectHideFlags: 0
