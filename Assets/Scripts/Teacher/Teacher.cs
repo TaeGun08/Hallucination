@@ -35,7 +35,7 @@ public class Teacher : MonoBehaviour
     [SerializeField] private bool chaseCheck;
     [SerializeField] private float chaseTime;
     private float chaseTimer;
-    private bool isChase;
+    private bool isChaseAudio;
 
     [SerializeField] private Transform headTrs;
 
@@ -89,9 +89,17 @@ public class Teacher : MonoBehaviour
             float shakeValue = Random.Range(-5f, 5f);
             cameraObejct.transform.rotation = Quaternion.Euler(cameraObejct.transform.eulerAngles.x, cameraObejct.transform.eulerAngles.y, shakeValue);
             sceneChange += Time.deltaTime;
+
+            if (sceneChange <= 0.1f)
+            {
+                agent.speed = 0;
+                StartCoroutine(overAudioPlaying());
+                anim.SetBool("isWalk", false);
+                anim.SetBool("isFastWalk", false);
+            }
+
             if (sceneChange >= 2)
             {
-                cameraOn = false;
                 sceneChange = 0;
                 FadeInOut.Instance.SetActive(false, () =>
                 {
@@ -152,29 +160,24 @@ public class Teacher : MonoBehaviour
                     float checkDistance = Vector3.Distance(coll.transform.position, transform.position);
                     Vector3 teacherHeadRayPos = new Vector3(transform.position.x, headTrs.position.y, transform.position.z);
 
-                    if (checkDistance <= 3)
+                    if (checkDistance <= 2)
                     {
-                        agent.speed = 0;
-                        StartCoroutine(overAudioPlaying());
                         cameraObejct.SetActive(true);
                         cameraOn = true;
-                        anim.SetBool("isWalk", false);
-                        anim.SetBool("isFastWalk", false);
                     }
                     else if (Vector3.Angle(transform.forward, directionToPlayer) < angle / 2 || checkDistance <= 8)
                     {
                         if (!Physics.Raycast(teacherHeadRayPos, directionToPlayer, checkDistance, obstacleMask))
                         {
-                            if (chaseCheck == false && isChase == false)
+                            if (chaseCheck == false)
                             {
                                 chaseTimer = chaseTime;
-                                StartCoroutine(chaseAudioPlaying());
                                 chaseCheck = true;
-                                isChase = true;
-                            }
-                            else if (isChase == true)
-                            {
-                                StartCoroutine(isChaseAudioPlaying());
+
+                                if (isChaseAudio == false)
+                                {
+                                    StartCoroutine(chaseAudioPlaying());
+                                }
                             }
 
                             agent.speed = 4f;
@@ -201,9 +204,14 @@ public class Teacher : MonoBehaviour
                 agent.SetDestination(GameManager.Instance.PlayerObject.transform.position);
             }
 
+            if (isChaseAudio == true)
+            {
+                StartCoroutine(isChaseAudioPlaying());
+            }
+
             setRandomPos();
 
-            if (playerDetected == false && chaseCheck == false)
+            if (playerDetected == false && chaseCheck == false && isChaseAudio == false)
             {
                 StartCoroutine(walkAudioPlaying());
                 anim.SetBool("isFastWalk", false);
@@ -221,8 +229,8 @@ public class Teacher : MonoBehaviour
         {
             if (randomPosCheck == true)
             {
+                isChaseAudio = false;
                 audioSource.Play();
-                isChase = false;
                 agent.speed = 3.5f;
                 Vector3 myPos = transform.position;
                 myPos.y = 0;
@@ -247,7 +255,7 @@ public class Teacher : MonoBehaviour
                     audioSource.Play();
                 }
 
-                isChase = false;
+                isChaseAudio = false;
                 agent.speed = 3.5f;
                 randomNumber = Random.Range(0, teacherPos.TeacherTrs.Count);
                 anim.SetBool("isWalk", true);
@@ -275,6 +283,7 @@ public class Teacher : MonoBehaviour
         audioSource.Pause();
 
         audioSource.clip = audioClips[0];
+        audioSource.spatialBlend = 1f;
         audioSource.Play();
 
         yield return new WaitForSeconds(audioSource.clip.length);
@@ -290,16 +299,12 @@ public class Teacher : MonoBehaviour
 
         audioSource.clip = audioClips[1];
         audioSource.loop = false;
+        audioSource.spatialBlend = 0.5f;
         audioSource.Play();
 
         yield return new WaitForSeconds(2);
 
-        if (chaseCheck == true)
-        {
-            audioSource.clip = audioClips[2];
-            audioSource.loop = true;
-            audioSource.Play();
-        }
+        isChaseAudio = true;
     }
 
     private IEnumerator isChaseAudioPlaying()
@@ -308,9 +313,7 @@ public class Teacher : MonoBehaviour
 
         audioSource.clip = audioClips[2];
         audioSource.loop = true;
-        audioSource.Play();
-        audioSource.minDistance = 5;
-        audioSource.maxDistance = 10;
+        audioSource.spatialBlend = 0.5f;
         audioSource.Play();
 
         yield return new WaitForSeconds(audioSource.clip.length);
