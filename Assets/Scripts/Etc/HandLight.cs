@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HandLight : MonoBehaviour
 {
     private void Update()
     {
-        Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(0.5f, 0.5f, Camera.main.nearClipPlane));
-        Vector3 direction = (worldPoint - transform.position).normalized;
-        transform.LookAt(worldPoint);
+        Vector3 lookPos = Camera.main.transform.position + Camera.main.transform.forward * 5f;
+        transform.LookAt(lookPos);
     }
 }

@@ -54,28 +54,31 @@ public class MoveController : MonoBehaviour
 
     private void Update()
     {
-        if (moveOn == false)
+        if (gameManager.GoDemoScene == false)
         {
-            hasMoveTimer += Time.deltaTime;
-            if (hasMoveTimer >= 3)
+            if (moveOn == false)
             {
-                moveOn = true;
-            }
-        }
-        else
-        {
-            if (SceneManager.GetActiveScene().name != "TeacherCutScene")
-            {
-                if (dialogueManager.IsDialogue == false && gameManager.PlayerQuestGame == false)
+                hasMoveTimer += Time.deltaTime;
+                if (hasMoveTimer >= 2)
                 {
-                    rotate();
-                    move();
-                    gravityVelocity();
+                    moveOn = true;
                 }
             }
             else
             {
-                headTrs.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z - 90f);
+                if (SceneManager.GetActiveScene().name != "TeacherCutScene")
+                {
+                    if (dialogueManager.IsDialogue == false && gameManager.PlayerQuestGame == false)
+                    {
+                        rotate();
+                        move();
+                        gravityVelocity();
+                    }
+                }
+                else
+                {
+                    headTrs.rotation = Quaternion.Euler(Camera.main.transform.eulerAngles.x, Camera.main.transform.eulerAngles.y, Camera.main.transform.eulerAngles.z - 90f);
+                }
             }
         }
     }

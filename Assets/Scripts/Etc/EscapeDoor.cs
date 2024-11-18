@@ -12,7 +12,9 @@ public class EscapeDoor : MonoBehaviour
 
     [SerializeField] private Animator teacherAnim;
     [SerializeField] private AudioSource teacherAudio;
+    [SerializeField] private List<AudioClip> clips;
     [SerializeField] private GameObject teacher;
+    [SerializeField] private GameObject teacherCamera;
 
     private bool open;
     public bool Open
@@ -52,23 +54,44 @@ public class EscapeDoor : MonoBehaviour
             timer += Time.deltaTime;
             coll.isTrigger = true;
             teacher.SetActive(false);
+            teacherCamera.SetActive(true);
+
+            teacherCamera.transform.position += teacherCamera.transform.forward * 0.5f * Time.deltaTime;
 
             if (timer <= 0.3f && teacherAudio.isPlaying == false)
             {
-                teacherAudio.Play();
+                StartCoroutine(audioPlaying());
+                GameManager.Instance.GoDemoScene = true;
             }
 
             if (timer >= 3)
+            {
+                float shakeValue = Random.Range(-2f, 2f);
+                teacherCamera.transform.rotation = Quaternion.Euler(teacherCamera.transform.eulerAngles.x, teacherCamera.transform.eulerAngles.y, shakeValue);
+            }
+
+            if (timer >= 6)
             {
                 FadeInOut.Instance.SetActive(false, () =>
                 {
                     SceneManager.LoadSceneAsync("LoadingScene");
 
-                    GameManager.Instance.GoDemoScene = true;
-
                     FadeInOut.Instance.SetActive(true);
                 });
             }
         }
+    }
+
+    private IEnumerator audioPlaying()
+    {
+        teacherAudio.Pause();
+
+        teacherAudio.clip = clips[0];
+        teacherAudio.Play();
+
+        yield return new WaitForSeconds(2);
+
+        teacherAudio.clip = clips[1];
+        teacherAudio.Play();
     }
 }

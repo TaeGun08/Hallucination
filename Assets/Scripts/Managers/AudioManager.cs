@@ -8,6 +8,17 @@ public class AudioManager : MonoBehaviour
     private GameManager gameManager;
 
     private AudioSource audioSource;
+    public AudioSource AudioManagerSource
+    {
+        get
+        {
+            return audioSource;
+        }
+        set
+        {
+            audioSource = value;
+        }
+    }
     [SerializeField] private List<AudioClip> bgmClip;
 
     private void Awake()
@@ -22,6 +33,15 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
+        if (EscapeDoor.Instance != null)
+        {
+            if (EscapeDoor.Instance.Open == true)
+            {
+                audioSource.Pause();
+                return;
+            }
+        }
+
         audioSource.volume = gameManager.Option.GetSlidersValue(0);
 
         if (SceneManager.GetActiveScene().name == "LoadingScene")
@@ -58,7 +78,5 @@ public class AudioManager : MonoBehaviour
                 audioSource.Play();
             }
         }
-    }
-
-     
+    } 
 }

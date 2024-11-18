@@ -22,11 +22,21 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    [SerializeField] private GameObject flashLight;
+
     private void Awake()
     {
         for (int iNum = 0; iNum < slotIndex; iNum++)
         {
             slot.Add(-1);
+        }
+    }
+
+    private void Update()
+    {
+        if (flashLight.activeSelf == false && InveItemCheck(50) == true)
+        {
+            flashLight.SetActive(true);
         }
     }
 

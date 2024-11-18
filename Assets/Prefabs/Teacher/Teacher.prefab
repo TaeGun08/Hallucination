@@ -346,6 +346,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7add2e39b0771134f948bf9674378659, type: 3}
   - {fileID: 8300000, guid: 3d0c7fd9fe8d21141a3f5903fc558164, type: 3}
   - {fileID: 8300000, guid: 18210ab08d560ae4e87bd04ba9ce08d6, type: 3}
+  - {fileID: 8300000, guid: d84437ec9d929df4786ad225b5feac24, type: 3}
   chaseCheck: 0
   chaseTime: 10
   chaseTimer: 0

@@ -52,7 +52,7 @@ public class ObjectChecker : MonoBehaviour
     /// </summary>
     private void objectCheck()
     {
-        if (dialogueManager.IsDialogue == false)
+        if (dialogueManager.IsDialogue == false && gameManager.GoDemoScene == false)
         {
             Ray pickUpRay = Camera.main.ScreenPointToRay(new Vector3(gameManager.RenderTexture.width * 0.5f, gameManager.RenderTexture.height * 0.5f));
 
@@ -132,7 +132,7 @@ public class ObjectChecker : MonoBehaviour
         {
             Door doorSc = _hit.collider.GetComponent<Door>();
 
-            if (doorSc.TeacherRoomOpen == true && inventory.EscapeKeyCount == 5)
+            if (doorSc.TeacherRoomOpen == true && inventory.EscapeKeyCount == 3)
             {
                 doorSc.TeacherRoomOpen = false;
                 doorSc.Open = true;
@@ -156,6 +156,7 @@ public class ObjectChecker : MonoBehaviour
             if (inventory.InveItemCheck(11))
             {
                 escapeDoorSc.Open = true;
+                gameObject.SetActive(false);
             }
         }
         else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Sleep"))

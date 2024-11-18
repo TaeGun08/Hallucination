@@ -9,6 +9,8 @@ public class MainSceneManager : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private List<Button> buttons;
 
+    [SerializeField] private GameObject choicePanel;
+
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -38,6 +40,24 @@ public class MainSceneManager : MonoBehaviour
 #else
             Application.Quit();
 #endif
+        });
+
+        buttons[3].onClick.AddListener(() =>
+        {
+            choicePanel.SetActive(true);
+        });
+
+        buttons[4].onClick.AddListener(() =>
+        {
+            QuestManager questManager = GameManager.Instance.GetManagers<QuestManager>(3);
+            questManager.ResetQuestData();
+            PlayerPrefs.DeleteAll();
+            choicePanel.SetActive(false);
+        });
+
+        buttons[5].onClick.AddListener(() =>
+        {
+            choicePanel.SetActive(false);
         });
     }
 }

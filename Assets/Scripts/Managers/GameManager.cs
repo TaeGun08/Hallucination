@@ -171,6 +171,11 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (goDemoScene == true)
+        {
+            eKeyText.SetActive(false);
+        }
+
         if (eyesUI.EyesCheck == true)
         {
             eyesUI.gameObject.SetActive(true);

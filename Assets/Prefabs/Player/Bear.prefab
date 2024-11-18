@@ -45,9 +45,9 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 40
-  m_Range: 15
-  m_SpotAngle: 50
+  m_Intensity: 80
+  m_Range: 50
+  m_SpotAngle: 100
   m_InnerSpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
@@ -358,6 +358,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotIndex: 9
   slot: 
+  flashLight: {fileID: 5545334250156058472}
 --- !u!4 &8712629832998737620 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6713665401314958236, guid: 5f9fd14a1df04e3459f0bb1c8fbc9d54,
@@ -441,6 +442,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: "\uC190\uC804\uB4F1"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3066614109358409922, guid: 3450be46232896b4587a9de1fce89a13,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -156,6 +156,7 @@ public class Teacher : MonoBehaviour
 
                     if (checkDistance <= 3)
                     {
+                        StartCoroutine(overAudioPlaying());
                         cameraObejct.SetActive(true);
                         cameraOn = true;
                         anim.SetBool("isWalk", false);
@@ -172,7 +173,7 @@ public class Teacher : MonoBehaviour
                                 chaseCheck = true;
                             }
 
-                            agent.speed = 4f;
+                            agent.speed = 4.2f;
                             anim.SetBool("isFastWalk", true);
                             agent.SetDestination(coll.transform.position);
                             playerDetected = true;
@@ -215,7 +216,7 @@ public class Teacher : MonoBehaviour
         {
             if (randomPosCheck == true)
             {
-                agent.speed = 3.5f;
+                agent.speed = 3.7f;
                 Vector3 myPos = transform.position;
                 myPos.y = 0;
                 Vector3 arrivalPos = teacherPos.TeacherTrs[randomNumber].position;
@@ -242,6 +243,16 @@ public class Teacher : MonoBehaviour
         }
     }
 
+    private IEnumerator overAudioPlaying()
+    {
+        audioSource.Pause();
+
+        audioSource.clip = audioClips[3];
+        audioSource.Play();
+
+        yield return new WaitForSeconds(audioSource.clip.length);
+    }
+
     /// <summary>
     /// 발검으 사운드를 실행시키키 위한 함수
     /// </summary>
@@ -251,7 +262,7 @@ public class Teacher : MonoBehaviour
         audioSource.Pause();
 
         audioSource.clip = audioClips[0];
-        audioSource.minDistance = 1;
+        audioSource.minDistance = 0.5f;
         audioSource.maxDistance = 3;
         audioSource.Play();
 
