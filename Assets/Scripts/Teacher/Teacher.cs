@@ -29,15 +29,13 @@ public class Teacher : MonoBehaviour
     }
     private bool randomPosCheck;
     private int randomNumber;
-    private bool stopTeacher;
-    private bool animChange;
-    private float changeAnimTimer;
 
     private AudioSource audioSource;
     [SerializeField] private List<AudioClip> audioClips;
     [SerializeField] private bool chaseCheck;
     [SerializeField] private float chaseTime;
-    [SerializeField] private float chaseTimer;
+    private float chaseTimer;
+    private bool isChase;
 
     [SerializeField] private Transform headTrs;
 
@@ -97,9 +95,9 @@ public class Teacher : MonoBehaviour
                 sceneChange = 0;
                 FadeInOut.Instance.SetActive(false, () =>
                 {
-                    SceneManager.LoadSceneAsync("LoadingScene");
-
                     GameManager.Instance.GameOver = true;
+
+                    SceneManager.LoadSceneAsync("LoadingScene");
 
                     FadeInOut.Instance.SetActive(true);
                 });
@@ -127,7 +125,7 @@ public class Teacher : MonoBehaviour
     /// </summary>
     private void playerChase()
     {
-        if (currentSceneName == "MapScene" && PlayerPrefs.GetInt("SaveScene") == 1)
+        if (currentSceneName == "MapScene" && PlayerPrefs.GetInt("SaveScene") == 1 && cameraOn == false)
         {
             bool playerDetected = false;
 
@@ -156,6 +154,7 @@ public class Teacher : MonoBehaviour
 
                     if (checkDistance <= 3)
                     {
+                        agent.speed = 0;
                         StartCoroutine(overAudioPlaying());
                         cameraObejct.SetActive(true);
                         cameraOn = true;
@@ -166,14 +165,19 @@ public class Teacher : MonoBehaviour
                     {
                         if (!Physics.Raycast(teacherHeadRayPos, directionToPlayer, checkDistance, obstacleMask))
                         {
-                            if (chaseCheck == false)
+                            if (chaseCheck == false && isChase == false)
                             {
                                 chaseTimer = chaseTime;
                                 StartCoroutine(chaseAudioPlaying());
                                 chaseCheck = true;
+                                isChase = true;
+                            }
+                            else if (isChase == true)
+                            {
+                                StartCoroutine(isChaseAudioPlaying());
                             }
 
-                            agent.speed = 4.2f;
+                            agent.speed = 4f;
                             anim.SetBool("isFastWalk", true);
                             agent.SetDestination(coll.transform.position);
                             playerDetected = true;
@@ -182,6 +186,7 @@ public class Teacher : MonoBehaviour
                         {
                             if (chaseCheck == false)
                             {
+                                audioSource.Pause();
                                 agent.speed = 0;
                                 anim.SetBool("isFastWalk", false);
                                 anim.SetBool("isWalk", false);
@@ -216,7 +221,9 @@ public class Teacher : MonoBehaviour
         {
             if (randomPosCheck == true)
             {
-                agent.speed = 3.7f;
+                audioSource.Play();
+                isChase = false;
+                agent.speed = 3.5f;
                 Vector3 myPos = transform.position;
                 myPos.y = 0;
                 Vector3 arrivalPos = teacherPos.TeacherTrs[randomNumber].position;
@@ -235,6 +242,12 @@ public class Teacher : MonoBehaviour
             }
             else
             {
+                if (audioSource.isPlaying == false)
+                {
+                    audioSource.Play();
+                }
+
+                isChase = false;
                 agent.speed = 3.5f;
                 randomNumber = Random.Range(0, teacherPos.TeacherTrs.Count);
                 anim.SetBool("isWalk", true);
@@ -262,8 +275,6 @@ public class Teacher : MonoBehaviour
         audioSource.Pause();
 
         audioSource.clip = audioClips[0];
-        audioSource.minDistance = 0.5f;
-        audioSource.maxDistance = 3;
         audioSource.Play();
 
         yield return new WaitForSeconds(audioSource.clip.length);
@@ -279,8 +290,6 @@ public class Teacher : MonoBehaviour
 
         audioSource.clip = audioClips[1];
         audioSource.loop = false;
-        audioSource.minDistance = 5;
-        audioSource.maxDistance = 10;
         audioSource.Play();
 
         yield return new WaitForSeconds(2);
@@ -291,5 +300,19 @@ public class Teacher : MonoBehaviour
             audioSource.loop = true;
             audioSource.Play();
         }
+    }
+
+    private IEnumerator isChaseAudioPlaying()
+    {
+        audioSource.Pause();
+
+        audioSource.clip = audioClips[2];
+        audioSource.loop = true;
+        audioSource.Play();
+        audioSource.minDistance = 5;
+        audioSource.maxDistance = 10;
+        audioSource.Play();
+
+        yield return new WaitForSeconds(audioSource.clip.length);
     }
 }

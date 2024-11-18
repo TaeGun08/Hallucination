@@ -348,8 +348,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 18210ab08d560ae4e87bd04ba9ce08d6, type: 3}
   - {fileID: 8300000, guid: d84437ec9d929df4786ad225b5feac24, type: 3}
   chaseCheck: 0
-  chaseTime: 10
-  chaseTimer: 0
+  chaseTime: 7
   headTrs: {fileID: 3661051744637852549}
   cameraObejct: {fileID: 7499202517310900664}
 --- !u!82 &952053650427165058
@@ -372,10 +371,10 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 0.5
-  MaxDistance: 3
+  MinDistance: 1
+  MaxDistance: 15
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
