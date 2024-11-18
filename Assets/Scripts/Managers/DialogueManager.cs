@@ -35,9 +35,6 @@ public class DialogueManager : MonoBehaviour
     }
     private List<int> questId = new List<int>();
 
-    private float nextSceneTimer;
-    private bool nextSceneCheck;
-
     private void Start()
     {
         gameManager = GameManager.Instance;
@@ -52,26 +49,6 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (nextSceneCheck)
-        {
-            nextSceneTimer += Time.deltaTime;
-            if (nextSceneTimer >= 2f)
-            {
-                nextSceneTimer = 0;
-                if (questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
-                    questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 0)
-                {
-                    PlayerPrefs.SetInt("SaveScene", 1);
-                }
-
-                gameManager.EyesUISc.OpenOrClose = true;
-                gameManager.EyesUISc.EyesCheck = true;
-                gameManager.EyesUISc.gameObject.SetActive(true);
-                gameManager.CutSceneLoad = false;
-                nextSceneCheck = false;
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.E) && isDialogue == true && dialogueTime >= 0.3f)
         {
             if (dialogueText.text == dialogueLine[index])
@@ -115,18 +92,7 @@ public class DialogueManager : MonoBehaviour
             dialogueLine = null;
             StartCoroutine(dialogueTimer());
             gameManager.PlayerObject.SetActive(true);
-
-            if (SceneManager.GetActiveScene().name == "TeacherCutScene" &&
-                questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
-                questManager.QuestCheck(200) && questManager.QuestCheck(210) && PlayerPrefs.GetInt("SaveScene") == 0)
-            {
-                nextSceneCheck = true;
-            }
-            else
-            {
-                cameraManager.GetVirtualCamera(0).gameObject.SetActive(true);
-            }
-
+            cameraManager.GetVirtualCamera(0).gameObject.SetActive(true);
             questManager.GetQuestGames().GameStart(questId);
         }
     }

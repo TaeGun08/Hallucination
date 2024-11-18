@@ -51,7 +51,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 40
+  m_Radius: 30
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4049287634305934182
 GameObject:
@@ -340,12 +340,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 43264
   checkColl: {fileID: 1973898154722599832}
-  angle: 60
-  distance: 40
+  angle: 80
+  distance: 30
   audioClips:
   - {fileID: 8300000, guid: 7add2e39b0771134f948bf9674378659, type: 3}
   - {fileID: 8300000, guid: 3d0c7fd9fe8d21141a3f5903fc558164, type: 3}
   - {fileID: 8300000, guid: 18210ab08d560ae4e87bd04ba9ce08d6, type: 3}
+  chaseCheck: 0
+  chaseTime: 10
   chaseTimer: 0
   headTrs: {fileID: 3661051744637852549}
   cameraObejct: {fileID: 7499202517310900664}

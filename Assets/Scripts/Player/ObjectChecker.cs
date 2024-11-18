@@ -8,8 +8,10 @@ using UnityEngine.SceneManagement;
 public class ObjectChecker : MonoBehaviour
 {
     private GameManager gameManager;
+    private CameraManager cameraManager;
     private DialogueManager dialogueManager;
     private QuestManager questManager;
+
     private Inventory inventory;
 
     [Header("전방의 오브젝트를 확인하기 위한 거리")]
@@ -30,6 +32,7 @@ public class ObjectChecker : MonoBehaviour
         }
 
         gameManager = GameManager.Instance;
+        cameraManager = gameManager.GetManagers<CameraManager>(0);
         dialogueManager = gameManager.GetManagers<DialogueManager>(2);
         questManager = gameManager.GetManagers<QuestManager>(3);
     }
@@ -111,6 +114,7 @@ public class ObjectChecker : MonoBehaviour
 
             if (dialogueManager.IsDialogue == false && itemQuestNpcSc != null)
             {
+                cameraManager.GetVirtualCamera(0).gameObject.SetActive(false);
                 itemQuestNpcSc.getInven(inventory);
                 playerNpcDistance(playerPos, npcPos);
                 gameObject.SetActive(false);
@@ -118,6 +122,7 @@ public class ObjectChecker : MonoBehaviour
 
             if (dialogueManager.IsDialogue == false && npcSc != null)
             {
+                cameraManager.GetVirtualCamera(0).gameObject.SetActive(false);
                 dialogueManager.StartDialogue(npcSc.GetNpcId(), npcSc.GetNpcQuestId());
                 playerNpcDistance(playerPos, npcPos);
                 gameObject.SetActive(false);

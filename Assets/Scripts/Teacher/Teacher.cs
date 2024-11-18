@@ -35,11 +35,9 @@ public class Teacher : MonoBehaviour
 
     private AudioSource audioSource;
     [SerializeField] private List<AudioClip> audioClips;
-    private bool chaseCheck;
-    private bool isChase;
+    [SerializeField] private bool chaseCheck;
+    [SerializeField] private float chaseTime;
     [SerializeField] private float chaseTimer;
-    private bool dontStopChase;
-    private float dontStopChaseTimer;
 
     [SerializeField] private Transform headTrs;
 
@@ -115,25 +113,13 @@ public class Teacher : MonoBehaviour
                 chaseTimer -= Time.deltaTime;
                 if (chaseTimer <= 0)
                 {
-                    chaseTimer = 0;
                     chaseCheck = false;
-                }
-            }
-
-            if (dontStopChase == true)
-            {
-                dontStopChaseTimer += Time.deltaTime;
-                if (dontStopChaseTimer > 10)
-                {
-                    dontStopChase = false;
-                    dontStopChaseTimer = 0;
+                    chaseTimer = 0;
                 }
             }
 
             playerChase();
         }
-
-        cutScene();
     }
 
     /// <summary>
@@ -144,7 +130,6 @@ public class Teacher : MonoBehaviour
         if (currentSceneName == "MapScene" && PlayerPrefs.GetInt("SaveScene") == 1)
         {
             bool playerDetected = false;
-            bool playerChaseCheck = false;
 
             Collider[] checkColl = Physics.OverlapSphere(transform.position, distance);
 
@@ -165,8 +150,6 @@ public class Teacher : MonoBehaviour
 
                 if (coll.gameObject.layer == LayerMask.NameToLayer("Player"))
                 {
-                    playerChaseCheck = true;
-
                     Vector3 directionToPlayer = (coll.transform.position - transform.position).normalized;
                     float checkDistance = Vector3.Distance(coll.transform.position, transform.position);
                     Vector3 teacherHeadRayPos = new Vector3(transform.position.x, headTrs.position.y, transform.position.z);
@@ -178,57 +161,45 @@ public class Teacher : MonoBehaviour
                         anim.SetBool("isWalk", false);
                         anim.SetBool("isFastWalk", false);
                     }
-                    else if (dontStopChaseTimer <= 5 && dontStopChase == true)
-                    {
-                        agent.SetDestination(coll.transform.position);
-                        anim.SetBool("isWalk", false);
-                        anim.SetBool("isFastWalk", true);
-                    }
                     else if (Vector3.Angle(transform.forward, directionToPlayer) < angle / 2 || checkDistance <= 8)
                     {
                         if (!Physics.Raycast(teacherHeadRayPos, directionToPlayer, checkDistance, obstacleMask))
                         {
-                            if (chaseCheck == false && isChase == false && dontStopChase == false)
+                            if (chaseCheck == false)
                             {
-                                chaseTimer = 15;
+                                chaseTimer = chaseTime;
                                 StartCoroutine(chaseAudioPlaying());
                                 chaseCheck = true;
-                                isChase = true;
-                                dontStopChase = true;
                             }
 
-                            agent.speed = 4.5f;
-                            anim.SetBool("isWalk", false);
+                            agent.speed = 4f;
                             anim.SetBool("isFastWalk", true);
                             agent.SetDestination(coll.transform.position);
                             playerDetected = true;
                         }
                         else
                         {
-                            isChase = false;
-                            anim.SetBool("isFastWalk", false);
-                            anim.SetBool("isWalk", false);
-                        }
-
-                        if (isChase == true)
-                        {
-                            agent.SetDestination(coll.transform.position);
+                            if (chaseCheck == false)
+                            {
+                                agent.speed = 0;
+                                anim.SetBool("isFastWalk", false);
+                                anim.SetBool("isWalk", false);
+                            }
                         }
                     }
                 }
             }
 
-            if (playerChaseCheck == false)
+            if (chaseCheck == true)
             {
-                isChase = false;
+                agent.SetDestination(GameManager.Instance.PlayerObject.transform.position);
             }
 
             setRandomPos();
 
-            if (playerDetected == false && chaseCheck == false && chaseTimer <= 0 && isChase == false && dontStopChase == false)
+            if (playerDetected == false && chaseCheck == false)
             {
                 StartCoroutine(walkAudioPlaying());
-                chaseCheck = false;
                 anim.SetBool("isFastWalk", false);
                 anim.SetBool("isWalk", true);
             }
@@ -240,10 +211,11 @@ public class Teacher : MonoBehaviour
     /// </summary>
     private void setRandomPos()
     {
-        if (chaseCheck == false && isChase == false)
+        if (chaseCheck == false)
         {
             if (randomPosCheck == true)
             {
+                agent.speed = 3.5f;
                 Vector3 myPos = transform.position;
                 myPos.y = 0;
                 Vector3 arrivalPos = teacherPos.TeacherTrs[randomNumber].position;
@@ -262,7 +234,7 @@ public class Teacher : MonoBehaviour
             }
             else
             {
-                agent.speed = 4;
+                agent.speed = 3.5f;
                 randomNumber = Random.Range(0, teacherPos.TeacherTrs.Count);
                 anim.SetBool("isWalk", true);
                 randomPosCheck = true;
@@ -307,67 +279,6 @@ public class Teacher : MonoBehaviour
             audioSource.clip = audioClips[2];
             audioSource.loop = true;
             audioSource.Play();
-        }
-    }
-
-    /// <summary>
-    /// 컷씬에서 재생할 애니메이션
-    /// </summary>
-    private void cutScene()
-    {
-        if (currentSceneName == "TeacherCutScene" && stopTeacher == false)
-        {
-            Collider[] checkColl = Physics.OverlapSphere(transform.position, 10, LayerMask.GetMask("Door"));
-
-            if (checkColl != null)
-            {
-                foreach (var door in checkColl)
-                {
-                    float distan = Vector3.Distance(door.transform.position, transform.position);
-                    if (distan <= 4)
-                    {
-                        Door doorSc = door.GetComponent<Door>();
-                        if (doorSc.TeacherRoomOpen == false)
-                        {
-                            doorSc.Open = true;
-                        }
-                    }
-                }
-            }
-
-            Vector3 myPos = transform.position;
-            myPos.y = 0;
-            Vector3 teaPos = gameManager.PlayerObject.transform.position;
-            teaPos.y = 0;
-
-            float distanceCheck = Vector3.Distance(teaPos, myPos);
-
-            if (distanceCheck > 2.7f)
-            {
-                anim.SetBool("isWalk", true);
-                agent.SetDestination(gameManager.PlayerObject.transform.position);
-            }
-            else
-            {
-                audioSource.Pause();
-                anim.SetBool("isWalk", false);
-                Vector3 rot = transform.eulerAngles;
-                rot.y = 90;
-                transform.eulerAngles = rot;
-                agent.SetDestination(new Vector3(0, 0, 0));
-                dialogueManager.StartCutSceneDialogue(10);
-                anim.SetBool("isGiveCandy", true);
-                stopTeacher = true;
-            }
-        }
-        else if (currentSceneName == "TeacherCutScene" && stopTeacher == true && animChange == false)
-        {
-            changeAnimTimer += Time.deltaTime;
-            if (changeAnimTimer >= 2)
-            {
-                anim.SetBool("isGiveCandy", false);
-                animChange = true;
-            }
         }
     }
 }
