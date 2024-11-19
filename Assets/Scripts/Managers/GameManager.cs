@@ -147,6 +147,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField] private GameObject tutorialImage;
+    private float tutorialTimer;
+    private bool tutoCheck;
+
     private void Awake()
     {
         if (Instance == null)
@@ -197,6 +201,27 @@ public class GameManager : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "MapScene" 
             && dialogueManager.IsDialogue == false && PlayerPrefs.GetInt("SaveScene") == 0)
         {
+            if (tutoCheck == false)
+            {
+                if (tutorialImage.activeSelf == false)
+                {
+                    tutorialImage.SetActive(true);
+                }
+                tutorialTimer += Time.deltaTime;
+                if (tutorialTimer >= 5f)
+                {
+                    tutoCheck = true;
+                    tutorialTimer = 0;
+                }
+            }
+            else
+            {
+                if (tutorialImage.activeSelf == true)
+                {
+                    tutorialImage.SetActive(false);
+                }
+            }
+
             if (wakeUpCheck == false)
             {
                 clearUI[0].SetActive(true);
@@ -353,6 +378,8 @@ public class GameManager : MonoBehaviour
         {
             clearUI[iNum].SetActive(false);
         }
+        tutorialImage.SetActive(false);
+        tutoCheck = false;
         catCheck = false;
         rabbitCheck = false;
         wakeUpCheck = false;
