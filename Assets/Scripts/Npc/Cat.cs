@@ -40,10 +40,16 @@ public class Cat : ItemQuestNpc
         }
     }
 
-
     public override void getInven(Inventory _inven)
     {
         base.getInven(_inven);
         base.questItemCheck(base.npcId, base.questId[0], 201);
+    }
+
+    public override int GetNpcId()
+    {
+        base.gameManager.CatRabbitQuestCheck(1);
+        base.GetNpcId();
+        return base.npcId;
     }
 }

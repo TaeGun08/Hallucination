@@ -81,7 +81,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private GameObject clearUI;
+    [SerializeField] private List<GameObject> clearUI;
+    private bool catCheck;
+    private bool rabbitCheck;
+    private bool wakeUpCheck;
 
     [SerializeField] private SettingManager option;
     public SettingManager Option
@@ -179,10 +182,61 @@ public class GameManager : MonoBehaviour
         if (eyesUI.EyesCheck == true)
         {
             eyesUI.gameObject.SetActive(true);
+            eKeyText.SetActive(false);
+            for (int iNum = 0; iNum < clearUI.Count; iNum++)
+            {
+                clearUI[iNum].SetActive(false);
+            }
+            return;
         }
         else
         {
             eyesUI.gameObject.SetActive(false);
+        }
+
+        if (SceneManager.GetActiveScene().name == "MapScene" 
+            && dialogueManager.IsDialogue == false && PlayerPrefs.GetInt("SaveScene") == 0)
+        {
+            if (wakeUpCheck == false)
+            {
+                clearUI[0].SetActive(true);
+            }
+
+            if (catCheck == true && rabbitCheck == true && !questManager.QuestCheck(200) && !questManager.QuestCheck(210))
+            {
+                clearUI[1].SetActive(false);
+                clearUI[2].SetActive(false);
+                clearUI[3].SetActive(true);
+            }
+            else if (catCheck == true && !questManager.QuestCheck(200))
+            {
+                clearUI[1].SetActive(true);
+                clearUI[3].SetActive(false);
+            }
+            else if (rabbitCheck == true && !questManager.QuestCheck(210))
+            {
+                clearUI[2].SetActive(true);
+                clearUI[3].SetActive(false);
+            }
+
+            else if (catCheck == true && questManager.QuestCheck(200))
+            {
+                clearUI[1].SetActive(false);
+                clearUI[3].SetActive(false);
+            }
+            else if (rabbitCheck == true && questManager.QuestCheck(210))
+            {
+                clearUI[2].SetActive(false);
+                clearUI[3].SetActive(false);
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "MapScene"
+                 && dialogueManager.IsDialogue == true && PlayerPrefs.GetInt("SaveScene") == 0)
+        {
+            for (int iNum = 0; iNum < clearUI.Count; iNum++)
+            {
+                clearUI[iNum].SetActive(false);
+            }
         }
 
         if (questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
@@ -190,16 +244,19 @@ public class GameManager : MonoBehaviour
         {
             if (SceneManager.GetActiveScene().name == "MapScene" && dialogueManager.IsDialogue == false)
             {
-                clearUI.SetActive(true);
+                for (int iNum = 0; iNum < clearUI.Count; iNum++)
+                {
+                    clearUI[iNum].SetActive(true);
+                }
+                clearUI[4].SetActive(true);
             }
             else
             {
-                clearUI.SetActive(false);
+                for (int iNum = 0; iNum < clearUI.Count; iNum++)
+                {
+                    clearUI[iNum].SetActive(false);
+                }
             }
-        }
-        else
-        {
-            clearUI.SetActive(false);
         }
 
         if (EscapeDoor.Instance != null)
@@ -266,5 +323,38 @@ public class GameManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void CatRabbitQuestCheck(int _number)
+    {
+        switch (_number)
+        {
+            case 1:
+                catCheck = true;
+                break;
+            case 2:
+                rabbitCheck = true;
+                break;
+        }
+    }
+
+    public void TextActiveFalse()
+    {
+        if (wakeUpCheck == false)
+        {
+            clearUI[0].SetActive(false);
+            wakeUpCheck = true;
+        }
+    }
+
+    public void ResetBool()
+    {
+        for (int iNum = 0; iNum < clearUI.Count; iNum++)
+        {
+            clearUI[iNum].SetActive(false);
+        }
+        catCheck = false;
+        rabbitCheck = false;
+        wakeUpCheck = false;
     }
 }

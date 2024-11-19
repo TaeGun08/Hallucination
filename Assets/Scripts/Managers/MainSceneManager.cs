@@ -49,6 +49,7 @@ public class MainSceneManager : MonoBehaviour
 
         buttons[4].onClick.AddListener(() =>
         {
+            GameManager.Instance.ResetBool();
             QuestManager questManager = GameManager.Instance.GetManagers<QuestManager>(3);
             questManager.ResetQuestData();
             PlayerPrefs.DeleteAll();

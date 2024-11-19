@@ -11,6 +11,11 @@ public class DemoScene : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.ResetBool();
+        questManager = GameManager.Instance.GetManagers<QuestManager>(3);
+        questManager.ResetQuestData();
+        PlayerPrefs.DeleteAll();
+
         Cursor.lockState = CursorLockMode.None;
 
         mainGoButton.onClick.AddListener(() =>
@@ -24,9 +29,5 @@ public class DemoScene : MonoBehaviour
                 FadeInOut.Instance.SetActive(true);
             });
         });
-
-        questManager = GameManager.Instance.GetManagers<QuestManager>(3);
-        questManager.ResetQuestData();
-        PlayerPrefs.DeleteAll();
     }
 }
