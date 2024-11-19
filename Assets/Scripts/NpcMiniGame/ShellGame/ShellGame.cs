@@ -66,6 +66,8 @@ public class ShellGame : MonoBehaviour
         dialogueManager = gameManager.GetManagers<DialogueManager>(2);
         questManager = gameManager.GetManagers<QuestManager>(3);
 
+        gameManager.QuestGameCheck = true;
+
         shellGameCamera.SetActive(false);
 
         ballCreate();
@@ -75,6 +77,7 @@ public class ShellGame : MonoBehaviour
     {
         if (gameClear == true && gameEnd == false)
         {
+            gameManager.QuestGameCheck = false;
             gameManager.PlayerQuestGame = false;
             shellGameClear();
             Destroy(gameObject);
@@ -177,6 +180,7 @@ public class ShellGame : MonoBehaviour
         shellCupTrs = ballTrs[ballRandomTrs];
 
         ballObj = Instantiate(ball, new Vector3(shellCupTrs.position.x, shellCupTrs.position.y - 0.2f, shellCupTrs.position.z), Quaternion.identity, transform);
+        ballObj.transform.rotation = Quaternion.Euler(0, 90, 0);
 
         ShuffleCup cupSc = cupTrs[ballRandomTrs].GetComponent<ShuffleCup>();
         cupSc.Choice = true;

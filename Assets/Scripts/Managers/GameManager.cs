@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,16 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    public class QuestCheckData
+    {
+        public bool catCheck;
+        public bool rabbitCheck;
+        public bool wakeUpCheck;
+        public bool tutoCheck;
+    }
+
+    private QuestCheckData questCheckData = new QuestCheckData();
 
     [Header("매니저오브젝트")]
     [SerializeField] private List<GameObject> managers;
@@ -85,6 +96,18 @@ public class GameManager : MonoBehaviour
     private bool catCheck;
     private bool rabbitCheck;
     private bool wakeUpCheck;
+    private bool questGameCheck;
+    public bool QuestGameCheck
+    {
+        get
+        {
+            return questGameCheck;
+        }
+        set
+        {
+            questGameCheck = value;
+        }
+    }
 
     [SerializeField] private SettingManager option;
     public SettingManager Option
@@ -168,6 +191,8 @@ public class GameManager : MonoBehaviour
     {
         questManager = transform.Find("QuestManager").GetComponent<QuestManager>();
         dialogueManager = managers[2].GetComponent<DialogueManager>();
+
+        questCheckDataLoad();
     }
 
     private void Update()
@@ -195,11 +220,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            tutorialImage.SetActive(false);
             eyesUI.gameObject.SetActive(false);
         }
 
         if (SceneManager.GetActiveScene().name == "MapScene" 
-            && dialogueManager.IsDialogue == false && PlayerPrefs.GetInt("SaveScene") == 0)
+            && dialogueManager.IsDialogue == false && PlayerPrefs.GetInt("SaveScene") == 0 && questGameCheck == false)
         {
             if (tutoCheck == false)
             {
@@ -212,6 +238,8 @@ public class GameManager : MonoBehaviour
                 {
                     tutoCheck = true;
                     tutorialTimer = 0;
+                    questCheckData.tutoCheck = tutoCheck;
+                    questCheckDataSave();
                 }
             }
             else
@@ -256,12 +284,32 @@ public class GameManager : MonoBehaviour
             }
         }
         else if (SceneManager.GetActiveScene().name == "MapScene"
-                 && dialogueManager.IsDialogue == true && PlayerPrefs.GetInt("SaveScene") == 0)
+                 && dialogueManager.IsDialogue == true && PlayerPrefs.GetInt("SaveScene") == 0 && questGameCheck == false)
         {
             for (int iNum = 0; iNum < clearUI.Count; iNum++)
             {
                 clearUI[iNum].SetActive(false);
             }
+        }
+        else if (questGameCheck == true && SceneManager.GetActiveScene().name == "MapScene")
+        {
+            for (int iNum = 0; iNum < clearUI.Count; iNum++)
+            {
+                clearUI[iNum].SetActive(false);
+            }
+        }
+        else if (SceneManager.GetActiveScene().name != "MapScene")
+        {
+            for (int iNum = 0; iNum < clearUI.Count; iNum++)
+            {
+                clearUI[iNum].SetActive(false);
+            }
+
+            if (tutoCheck == false)
+            {
+                tutorialTimer = 0;
+            }
+            tutorialImage.SetActive(false);
         }
 
         if (questManager.QuestCheck(100) && questManager.QuestCheck(110) &&
@@ -318,6 +366,26 @@ public class GameManager : MonoBehaviour
         Time.timeScale = gamePause == true ? Time.timeScale = 0 : Time.timeScale = 1;
     }
 
+    private void questCheckDataSave()
+    {
+        string saveData = JsonConvert.SerializeObject(questCheckData);
+        PlayerPrefs.SetString("QuestCheckData", saveData);
+    }
+
+    private void questCheckDataLoad()
+    {
+        if (!string.IsNullOrEmpty(PlayerPrefs.GetString("QuestCheckData")))
+        {
+            string saveData = PlayerPrefs.GetString("QuestCheckData");
+            questCheckData = JsonConvert.DeserializeObject<QuestCheckData>(saveData);
+
+            tutoCheck = questCheckData.tutoCheck;
+            catCheck = questCheckData.catCheck;
+            rabbitCheck = questCheckData.rabbitCheck;
+            wakeUpCheck = questCheckData.wakeUpCheck;
+        }
+    }
+
     /// <summary>
     /// 게임 정지 및 활성화
     /// </summary>
@@ -356,9 +424,13 @@ public class GameManager : MonoBehaviour
         {
             case 1:
                 catCheck = true;
+                questCheckData.catCheck = catCheck;
+                questCheckDataSave();
                 break;
             case 2:
                 rabbitCheck = true;
+                questCheckData.rabbitCheck = rabbitCheck;
+                questCheckDataSave();
                 break;
         }
     }
@@ -369,6 +441,8 @@ public class GameManager : MonoBehaviour
         {
             clearUI[0].SetActive(false);
             wakeUpCheck = true;
+            questCheckData.wakeUpCheck = wakeUpCheck;
+            questCheckDataSave();
         }
     }
 
@@ -383,5 +457,11 @@ public class GameManager : MonoBehaviour
         catCheck = false;
         rabbitCheck = false;
         wakeUpCheck = false;
+
+        questCheckData.tutoCheck = tutoCheck;
+        questCheckData.catCheck = catCheck;
+        questCheckData.rabbitCheck = rabbitCheck;
+        questCheckData.wakeUpCheck = wakeUpCheck;
+        questCheckDataSave();
     }
 }

@@ -3598,6 +3598,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4d8854e8801c0548a43c9ad5414a8dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  saveSetting:
+    sliders: []
+    windowToggle: 0
   setting: {fileID: 4299141702560317763}
   settingComponent: {fileID: 1830270572270538965}
   closeButton: {fileID: 4710588788582551881}
@@ -7594,6 +7597,7 @@ RectTransform:
   m_Children:
   - {fileID: 6272793398398561391}
   - {fileID: 7833914747672080425}
+  - {fileID: 4306246425623448345}
   - {fileID: 4078537427829532071}
   - {fileID: 161154699375899491}
   - {fileID: 3872871414189439828}
@@ -7601,7 +7605,6 @@ RectTransform:
   - {fileID: 1374930144409187628}
   - {fileID: 3058894120285899342}
   - {fileID: 1893155007674574962}
-  - {fileID: 4306246425623448345}
   m_Father: {fileID: 2244559174664906477}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7912,7 +7915,7 @@ Transform:
   m_GameObject: {fileID: 8615620675875257094}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

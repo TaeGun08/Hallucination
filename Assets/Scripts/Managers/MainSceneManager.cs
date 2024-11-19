@@ -18,6 +18,7 @@ public class MainSceneManager : MonoBehaviour
         buttons[0].onClick.AddListener(() => 
         {
             audioSource.Play();
+
             FadeInOut.Instance.SetActive(false, () =>
             {
                 SceneManager.LoadSceneAsync("LoadingScene");

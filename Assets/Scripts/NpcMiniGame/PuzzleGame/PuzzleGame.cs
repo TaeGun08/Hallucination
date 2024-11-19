@@ -17,6 +17,8 @@ public class PuzzleGame : MonoBehaviour
         dialogueManager = gameManager.GetManagers<DialogueManager>(2);
         questManager = gameManager.GetManagers<QuestManager>(3);
 
+        gameManager.QuestGameCheck = true;
+
         Cursor.lockState = CursorLockMode.None;
     }
 
@@ -25,6 +27,7 @@ public class PuzzleGame : MonoBehaviour
         if (gameClear == true && questManager.QuestCheck(100) == false)
         {
             Cursor.lockState = CursorLockMode.Locked;
+            gameManager.QuestGameCheck = false;
             questManager.CompleteQuest(100);
             dialogueManager.StartDialogue(1000, new List<int> { 101 });
             questManager.CompleteQuest(101);

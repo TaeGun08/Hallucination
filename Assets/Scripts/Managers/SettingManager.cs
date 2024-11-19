@@ -11,13 +11,14 @@ public class SettingManager : MonoBehaviour
     private GameManager gameManager;
     private CameraManager cameraManager;
 
+    [System.Serializable]
     public class SaveSetting
     {
         public List<float> sliders = new List<float>(); // 저장된 배경음, 효과음, 민감도 설정을 위한 슬라이더
         public bool windowToggle; // 저장된 창모드를 위한 토글
     }
 
-    private SaveSetting saveSetting = new SaveSetting();
+    [SerializeField] private SaveSetting saveSetting = new SaveSetting();
 
     private AudioSource audioSource;
 
@@ -108,14 +109,31 @@ public class SettingManager : MonoBehaviour
         {
             int count = sliders.Count;
 
-            string getSaveSetting = PlayerPrefs.GetString("saveSetting");
-            saveSetting = JsonConvert.DeserializeObject<SaveSetting>(getSaveSetting);
-            for (int iNum = 0; iNum < count; iNum++)
+            if (PlayerPrefs.GetString("saveSetting") != string.Empty)
             {
-                sliders[iNum].value = saveSetting.sliders[iNum];
+                string getSaveSetting = PlayerPrefs.GetString("saveSetting");
+                saveSetting = JsonConvert.DeserializeObject<SaveSetting>(getSaveSetting);
+
+                for (int iNum = 0; iNum < count; iNum++)
+                {
+                    sliders[iNum].value = saveSetting.sliders[iNum];
+                }
+
+                windowToggle.isOn = saveSetting.windowToggle;
+            }
+            else
+            {
+                for (int iNum = 0; iNum < count; iNum++)
+                {
+                    sliders[iNum].value = 0.5f;
+                }
+
+                windowToggle.isOn = false;
+
+                string setSaveSetting = JsonConvert.SerializeObject(saveSetting);
+                PlayerPrefs.SetString("saveSetting", setSaveSetting);
             }
 
-            windowToggle.isOn = saveSetting.windowToggle;
             check = false;
         }
         else if (settingComponent.activeSelf == true)
@@ -136,10 +154,11 @@ public class SettingManager : MonoBehaviour
             for (int iNum = 0; iNum < count; iNum++)
             {
                 saveSetting.sliders.Add(0.5f);
-                saveSetting.windowToggle = false;
                 sliders[iNum].value = 0.5f;
-                windowToggle.isOn = false;
             }
+
+            saveSetting.windowToggle = false;
+            windowToggle.isOn = false;
 
             string setSaveSetting = JsonConvert.SerializeObject(saveSetting);
             PlayerPrefs.SetString("saveSetting", setSaveSetting);
