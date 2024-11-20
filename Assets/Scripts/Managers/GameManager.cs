@@ -319,7 +319,7 @@ public class GameManager : MonoBehaviour
             {
                 for (int iNum = 0; iNum < clearUI.Count; iNum++)
                 {
-                    clearUI[iNum].SetActive(true);
+                    clearUI[iNum].SetActive(false);
                 }
                 clearUI[4].SetActive(true);
             }
