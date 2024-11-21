@@ -92,6 +92,8 @@ public class ShellGame : MonoBehaviour
         if (gameOver == true)
         {
             Cursor.lockState = CursorLockMode.Locked;
+            gameManager.QuestGameCheck = false;
+            gameManager.PlayerQuestGame = false;
             shellGameOver();
             Destroy(gameObject);
         }
