@@ -62,6 +62,7 @@ public class EscapeDoor : MonoBehaviour
             {
                 StartCoroutine(audioPlaying());
                 GameManager.Instance.GoDemoScene = true;
+                ExitTextCheck.Instance.SetActiveFalse();
             }
 
             if (timer >= 3)

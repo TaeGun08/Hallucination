@@ -88,22 +88,6 @@ public class ObjectChecker : MonoBehaviour
             inventory.SetItemIndex(_hit.collider.gameObject.GetComponent<Item>().ItemIndex);
             Destroy(_hit.collider.gameObject);
         }
-        //else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("HideObject"))
-        //{
-        //    HideObject hideSc = _hit.collider.gameObject.GetComponent<HideObject>();
-        //    if (hideSc != null)
-        //    {
-        //        if (hideSc.Hide == false)
-        //        {
-        //            characterController.height = 1;
-        //            characterController.enabled = false;
-        //            gameObject.transform.position = hideSc.HideTransform().position;
-        //            characterController.enabled = true;
-        //            hideSc.Hide = true;
-        //            hideSc.PlayerObject(gameObject);
-        //        }
-        //    }
-        //}
         else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("Npc"))
         {
             Npc npcSc = _hit.collider.gameObject.GetComponent<Npc>();
@@ -132,7 +116,7 @@ public class ObjectChecker : MonoBehaviour
         {
             Door doorSc = _hit.collider.GetComponent<Door>();
 
-            if (doorSc.TeacherRoomOpen == true && inventory.EscapeKeyCount == 3)
+            if (doorSc.TeacherRoomOpen == true && inventory.EscapeKeyCount == 4)
             {
                 doorSc.TeacherRoomOpen = false;
                 doorSc.Open = true;
@@ -153,7 +137,7 @@ public class ObjectChecker : MonoBehaviour
         else if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("ExitDoor"))
         {
             EscapeDoor escapeDoorSc = _hit.collider.GetComponent<EscapeDoor>();
-            if (inventory.InveItemCheck(11))
+            if (inventory.EscapeKeyCount == 4)
             {
                 escapeDoorSc.Open = true;
                 gameObject.SetActive(false);

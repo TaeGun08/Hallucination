@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Inventory : MonoBehaviour
 {
@@ -83,7 +81,13 @@ public class Inventory : MonoBehaviour
             {
                 if (_index == 10)
                 {
-                    escapeKeyCount++;
+                    ++escapeKeyCount;
+                    KeyCheck.Instance.SetTextKey(escapeKeyCount);
+
+                    if (escapeKeyCount >= 4)
+                    {
+                        ExitTextCheck.Instance.SetActiveTrue();
+                    }
                 }
                 slot[iNum] = _index;
                 break;
